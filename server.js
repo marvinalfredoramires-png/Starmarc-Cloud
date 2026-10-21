@@ -13,8 +13,8 @@ app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
 
     // Credenciales válidas requeridas
-    const emailValido = "admin@starmarc.com";
-    const passwordValida = "123456"; 
+    const emailValido = "marvinalfredoramires@gmail.com";
+    const passwordValida = "Marvin503"; 
 
     // Validación estricta: Deniega el acceso si el correo o la contraseña no coinciden
     if (email !== emailValido || password !== passwordValida) {
