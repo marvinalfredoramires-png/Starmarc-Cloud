@@ -1,106 +1,113 @@
 const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
 const path = require('path');
-const multer = require('multer');
-const { S3Client, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand } = require('@aws-sdk/client-s3');
-
-dotenv.config();
-
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middlewares
-app.use(cors());
+// Middleware para procesar JSON y datos de formularios
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir archivos estáticos (index.html, CSS, JS) desde la raíz
-app.use(express.static(__dirname));
-
-// Configurar cliente de Cloudflare R2
-const s3 = new S3Client({
-  region: 'auto',
-  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-  credentials: {
-    accessKeyId: process.env.R2_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
-  },
-});
-
-const upload = multer({ storage: multer.memoryStorage() });
-
-// --- RUTAS DE AUTENTICACIÓN Y SERVIDOR ---
-
-// Ruta principal para servir el frontend
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Endpoint de Registro
-app.post('/api/register', (req, res) => {
-  const { nombre, email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Por favor completa todos los campos' });
-  }
-  return res.json({ success: true, message: 'Usuario registrado correctamente', user: { nombre, email } });
-});
-
-// Endpoint de Inicio de Sesión
+// ==========================================
+// 1. RUTA DE INICIO DE SESIÓN SEGURO
+// ==========================================
 app.post('/api/login', (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Correo y contraseña requeridos' });
-  }
-  return res.json({ success: true, message: 'Inicio de sesión exitoso', user: { email } });
-});
+    const { email, password } = req.body;
 
-// --- RUTAS DE ALMACENAMIENTO R2 ---
+    // Credenciales válidas requeridas
+    const emailValido = "admin@starmarc.com";
+    const passwordValida = "123456"; 
 
-// Listar archivos del Bucket
-app.get('/api/files', async (req, res) => {
-  try {
-    const command = new ListObjectsV2Command({ Bucket: process.env.R2_BUCKET_NAME });
-    const response = await s3.send(command);
-    const files = (response.Contents || []).map((file) => ({
-      key: file.Key,
-      size: file.Size,
-      lastModified: file.LastModified,
-      url: `${process.env.R2_PUBLIC_URL}/${file.Key}`,
-    }));
-    res.json({ success: true, files });
-  } catch (error) {
-    console.error('Error al listar archivos:', error);
-    res.status(500).json({ error: 'Error al conectar con el almacenamiento R2' });
-  }
-});
-
-// Subir archivo a R2
-app.post('/api/upload', upload.single('file'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No se seleccionó ningún archivo' });
+    // Validación estricta: Deniega el acceso si el correo o la contraseña no coinciden
+    if (email !== emailValido || password !== passwordValida) {
+        return res.status(401).json({ 
+            success: false, 
+            message: 'Correo o contraseña incorrectos. Acceso denegado.' 
+        });
     }
-    const fileName = `${Date.now()}-${req.file.originalname}`;
-    const command = new PutObjectCommand({
-      Bucket: process.env.R2_BUCKET_NAME,
-      Key: fileName,
-      Body: req.file.buffer,
-      ContentType: req.file.mimetype,
+
+    // Respuesta de éxito únicamente si las credenciales son correctas
+    return res.status(200).json({ 
+        success: true, 
+        message: 'Inicio de sesión exitoso' 
     });
-    await s3.send(command);
-    res.json({
-      success: true,
-      message: 'Archivo subido con éxito',
-      fileUrl: `${process.env.R2_PUBLIC_URL}/${fileName}`,
-    });
-  } catch (error) {
-    console.error('Error al subir archivo:', error);
-    res.status(500).json({ error: 'Fallo al guardar el archivo en R2' });
-  }
 });
 
-// Iniciar servidor
+// ==========================================
+// 2. INTERFAZ Y VALIDACIÓN EN EL FRONTEND
+// ==========================================
+app.get('/', (req, res) => {
+    res.send(`
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Starmarc Cloud - Iniciar Sesión</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-slate-900 text-white flex items-center justify-center h-screen m-0">
+        <div class="bg-slate-800 p-8 rounded-2xl shadow-xl w-96 border border-slate-700">
+            <h2 class="text-2xl font-bold mb-6 text-center text-sky-400">STARMARC CLOUD</h2>
+            
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Correo electrónico</label>
+                    <input type="email" id="emailInput" required class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-sky-500 text-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Contraseña</label>
+                    <input type="password" id="passwordInput" required class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg focus:outline-none focus:border-sky-500 text-white">
+                </div>
+                <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 rounded-lg transition duration-200">
+                    Iniciar Sesión
+                </button>
+            </form>
+            <p id="errorMsg" class="text-red-400 text-sm mt-4 text-center hidden"></p>
+        </div>
+
+        <script>
+            // Lógica de control en el navegador
+            document.getElementById('loginForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('emailInput').value;
+                const password = document.getElementById('passwordInput').value;
+                const errorMsg = document.getElementById('errorMsg');
+
+                errorMsg.classList.add('hidden');
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+
+                    // BLOQUEO ESTRICTO: Solo permite avanzar si el servidor valida las credenciales
+                    if (response.ok && data.success) {
+                        alert('¡Acceso concedido!');
+                        // window.location.href = '/dashboard'; // Redirección al panel
+                    } else {
+                        // Muestra el mensaje de error y detiene el acceso
+                        errorMsg.textContent = data.message || 'Credenciales inválidas';
+                        errorMsg.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    errorMsg.textContent = 'Error de conexión con el servidor.';
+                    errorMsg.classList.remove('hidden');
+                }
+            });
+        </script>
+    </body>
+    </html>
+    `);
+});
+
+// ==========================================
+// 3. PUERTO Y SERVIDOR
+// ==========================================
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor Starmarc Cloud ejecutándose en el puerto ${PORT}`);
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
