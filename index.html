@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -7,11 +7,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-[#0b0f19] text-white min-h-screen font-sans flex">
+<body class="bg-[#090d16] text-white min-h-screen font-sans flex">
 
-  <!-- ==================== PANTALLA DE AUTENTICACIÓN (LOGIN / REGISTRO) ==================== -->
-  <div id="auth-container" class="fixed inset-0 bg-[#0b0f19] z-50 flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-[#111827] border border-slate-800 rounded-2xl p-8 shadow-2xl">
+  <!-- ==================== PANTALLA DE AUTENTICACIÓN ==================== -->
+  <div id="auth-container" class="fixed inset-0 bg-[#090d16] z-50 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-[#101726] border border-slate-800 rounded-2xl p-8 shadow-2xl">
       <div class="text-center mb-8">
         <div class="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-sky-500/20">
           <i class="fa-solid fa-cloud text-3xl text-white"></i>
@@ -27,15 +27,15 @@
       <form id="auth-form" class="space-y-4">
         <div id="field-nombre">
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nombre Completo</label>
-          <input type="text" id="nombre" placeholder="Marvin Ramirez" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
+          <input type="text" id="nombre" placeholder="Marvin Ramirez" class="w-full px-4 py-3 bg-[#090d16] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Correo Electrónico</label>
-          <input type="email" id="email" required placeholder="correo@ejemplo.com" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
+          <input type="email" id="email" required placeholder="correo@ejemplo.com" class="w-full px-4 py-3 bg-[#090d16] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contraseña</label>
-          <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
+          <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-[#090d16] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
         </div>
         <button type="submit" id="btn-submit" class="w-full py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 transition mt-2">
           Registrarse
@@ -50,11 +50,11 @@
   </div>
 
 
-  <!-- ==================== DASHBOARD PRINCIPAL (OCULTO HASTA INICIAR SESIÓN) ==================== -->
+  <!-- ==================== DASHBOARD PRINCIPAL ==================== -->
   <div id="dashboard-container" class="hidden flex min-h-screen w-full">
 
     <!-- SIDEBAR IZQUIERDA -->
-    <aside class="w-64 bg-[#111827] border-r border-slate-800 flex flex-col justify-between p-6 shrink-0">
+    <aside class="w-64 bg-[#101726] border-r border-slate-800/80 flex flex-col justify-between p-6 shrink-0">
       <div>
         <!-- Logo -->
         <div class="flex items-center gap-3 mb-8">
@@ -73,7 +73,7 @@
         </button>
 
         <!-- Menú Principal -->
-        <nav class="space-y-1 mb-8">
+        <nav class="space-y-1 mb-6">
           <button onclick="switchView('all')" class="nav-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium bg-sky-500/10 text-sky-400 border border-sky-500/20 transition">
             <span class="flex items-center gap-3"><i class="fa-solid fa-folder"></i> Mis Archivos</span>
           </button>
@@ -89,31 +89,50 @@
         </nav>
 
         <!-- Categorías -->
-        <div>
-          <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-3 px-2">Categorías</p>
+        <div class="mb-6">
+          <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 px-2">Categorías</p>
           <div class="space-y-1">
-            <button onclick="filterCategory('all')" class="cat-btn w-full flex items-center justify-between px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+            <button onclick="filterCategory('all')" class="cat-btn w-full flex items-center justify-between px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
               <span class="flex items-center gap-3"><i class="fa-solid fa-box text-sky-400"></i> Todos</span>
-              <span id="count-all" class="bg-slate-800 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
+              <span id="count-all" class="bg-slate-800/80 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
             </button>
-            <button onclick="filterCategory('images')" class="cat-btn w-full flex items-center justify-between px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+            <button onclick="filterCategory('images')" class="cat-btn w-full flex items-center justify-between px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
               <span class="flex items-center gap-3"><i class="fa-solid fa-image text-emerald-400"></i> Imágenes</span>
-              <span id="count-images" class="bg-slate-800 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
+              <span id="count-images" class="bg-slate-800/80 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
             </button>
-            <button onclick="filterCategory('docs')" class="cat-btn w-full flex items-center justify-between px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+            <button onclick="filterCategory('docs')" class="cat-btn w-full flex items-center justify-between px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
               <span class="flex items-center gap-3"><i class="fa-solid fa-file-lines text-amber-400"></i> Documentos</span>
-              <span id="count-docs" class="bg-slate-800 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
+              <span id="count-docs" class="bg-slate-800/80 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
             </button>
-            <button onclick="filterCategory('media')" class="cat-btn w-full flex items-center justify-between px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+            <button onclick="filterCategory('media')" class="cat-btn w-full flex items-center justify-between px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
               <span class="flex items-center gap-3"><i class="fa-solid fa-video text-purple-400"></i> Multimedia</span>
-              <span id="count-media" class="bg-slate-800 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
+              <span id="count-media" class="bg-slate-800/80 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Álbumes -->
+        <div>
+          <div class="flex items-center justify-between mb-2 px-2">
+            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Álbumes</p>
+            <button onclick="createAlbum()" class="text-sky-400 hover:text-sky-300 text-xs"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div class="space-y-1" id="albums-menu">
+            <button onclick="filterAlbum('Vacaciones')" class="w-full flex items-center gap-3 px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+              <i class="fa-solid fa-images text-pink-400"></i> Vacaciones
+            </button>
+            <button onclick="filterAlbum('Trabajo')" class="w-full flex items-center gap-3 px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+              <i class="fa-solid fa-briefcase text-blue-400"></i> Trabajo
+            </button>
+            <button onclick="filterAlbum('Personal')" class="w-full flex items-center gap-3 px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+              <i class="fa-solid fa-user-group text-emerald-400"></i> Personal
             </button>
           </div>
         </div>
       </div>
 
       <!-- Almacenamiento Utilizado -->
-      <div class="bg-slate-900/80 border border-slate-800/80 p-4 rounded-xl">
+      <div class="bg-[#090d16] border border-slate-800/80 p-4 rounded-xl mt-4">
         <div class="flex justify-between text-xs mb-2">
           <span class="text-slate-400 font-medium">Almacenamiento</span>
           <span id="storage-text" class="text-sky-400 font-bold">0 MB / 10 GB</span>
@@ -126,26 +145,26 @@
 
 
     <!-- CONTENIDO PRINCIPAL DERECHA -->
-    <main class="flex-1 flex flex-col min-w-0 bg-[#0b0f19]">
+    <main class="flex-1 flex flex-col min-w-0 bg-[#090d16]">
       
       <!-- Top Bar Superior -->
-      <header class="h-20 bg-[#111827] border-b border-slate-800 px-8 flex items-center justify-between gap-6 shrink-0">
+      <header class="h-20 bg-[#101726] border-b border-slate-800 px-8 flex items-center justify-between gap-6 shrink-0">
         <!-- Buscador -->
         <div class="relative flex-1 max-w-xl">
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
-          <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Buscar en Starmarc Cloud..." class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500 transition">
+          <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Buscar en Starmarc Cloud..." class="w-full bg-[#090d16] border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500 transition">
         </div>
 
         <!-- Perfil Usuario & Botón Subir Archivo -->
         <div class="flex items-center gap-4">
-          <button onclick="document.getElementById('file-input-hidden').click()" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+          <button onclick="document.getElementById('file-input-hidden').click()" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
             <i class="fa-solid fa-cloud-arrow-up"></i> Subir archivo
           </button>
           <div class="flex items-center gap-3 pl-4 border-l border-slate-800">
-            <div id="user-avatar" class="w-9 h-9 bg-sky-600 rounded-xl font-bold flex items-center justify-center text-xs text-white shadow">SA</div>
+            <div id="user-avatar" class="w-9 h-9 bg-purple-600 rounded-full font-bold flex items-center justify-center text-xs text-white shadow">SA</div>
             <div class="hidden sm:block">
-              <p id="user-name-display" class="text-xs font-bold text-white">Starmarc Admin</p>
-              <p id="user-email-display" class="text-[10px] text-slate-400">admin@starmarc.com</p>
+              <p id="user-name-display" class="text-xs font-bold text-white">Stamarc Admin</p>
+              <p id="user-email-display" class="text-[10px] text-slate-400">admin@stamarc.com</p>
             </div>
             <button onclick="logout()" class="ml-2 p-2 text-slate-400 hover:text-red-400 transition" title="Cerrar sesión">
               <i class="fa-solid fa-right-from-bracket"></i>
@@ -162,12 +181,12 @@
         
         <div class="flex items-center justify-between mb-6">
           <div>
-            <h2 id="view-title" class="text-xl font-bold text-white flex items-center gap-3">
-              Mis Archivos <span id="category-badge" class="bg-slate-800 text-slate-300 text-xs px-2.5 py-0.5 rounded-lg font-normal">Todos</span>
+            <h2 id="view-title" class="text-2xl font-bold text-white flex items-center gap-3">
+              Mis Archivos <span id="category-badge" class="bg-blue-600/30 text-blue-400 text-xs px-3 py-1 rounded-full font-semibold">Todos</span>
             </h2>
-            <p class="text-xs text-slate-400 mt-1">Arrastra y suelta tus archivos en cualquier lugar o haz clic en "Subir archivo" para añadirlos.</p>
+            <p class="text-xs text-slate-400 mt-1">Arrastra y suelta tus archivos en cualquier lugar para subirlos</p>
           </div>
-          <div class="flex items-center gap-2 bg-[#111827] border border-slate-800 p-1 rounded-xl">
+          <div class="flex items-center gap-2 bg-[#101726] border border-slate-800 p-1 rounded-xl">
             <button class="p-2 bg-slate-800 text-sky-400 rounded-lg text-xs"><i class="fa-solid fa-grip"></i></button>
             <button class="p-2 text-slate-500 hover:text-white rounded-lg text-xs transition"><i class="fa-solid fa-list"></i></button>
           </div>
@@ -175,15 +194,15 @@
 
         <div id="upload-status" class="hidden mb-6 p-3 rounded-xl text-xs text-center"></div>
 
-        <!-- Grid de Archivos -->
-        <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          <!-- Tarjetas dinámicas aquí -->
+        <!-- Grid de Archivos exactos al diseño -->
+        <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <!-- Tarjetas dinámicas generadas en JavaScript -->
         </div>
 
         <!-- Estado Vacío -->
         <div id="empty-state" class="text-center py-20 text-slate-500 hidden">
           <i class="fa-solid fa-box-open text-5xl mb-3 text-slate-600"></i>
-          <p class="text-sm">No hay archivos en esta sección.</p>
+          <p class="text-sm">No hay archivos ni álbumes en esta sección.</p>
         </div>
 
       </div>
@@ -195,6 +214,7 @@
   <script>
     let allFiles = [];
     let currentCategory = 'all';
+    let currentAlbum = null;
     let currentView = 'all';
     let searchQuery = '';
 
@@ -326,19 +346,52 @@
 
     function switchView(view) {
       currentView = view;
-      document.getElementById('view-title').innerHTML = view === 'recent' ? 'Archivos Recientes' : view === 'favorites' ? 'Favoritos' : view === 'trash' ? 'Papelera' : 'Mis Archivos <span id="category-badge" class="bg-slate-800 text-slate-300 text-xs px-2.5 py-0.5 rounded-lg font-normal">Todos</span>';
+      currentAlbum = null;
+      document.getElementById('view-title').innerHTML = view === 'recent' ? 'Archivos Recientes' : view === 'favorites' ? 'Favoritos' : view === 'trash' ? 'Papelera' : 'Mis Archivos <span id="category-badge" class="bg-blue-600/30 text-blue-400 text-xs px-3 py-1 rounded-full font-semibold">Todos</span>';
       renderUI();
     }
 
     function filterCategory(cat) {
       currentCategory = cat;
+      currentAlbum = null;
       currentView = 'all';
       renderUI();
+    }
+
+    function filterAlbum(albumName) {
+      currentAlbum = albumName;
+      document.getElementById('view-title').innerHTML = `Álbum: ${albumName} <span class="bg-sky-500/20 text-sky-400 text-xs px-3 py-1 rounded-full font-semibold">Álbum</span>`;
+      renderUI();
+    }
+
+    function createAlbum() {
+      const name = prompt('Nombre del nuevo álbum:');
+      if (!name) return;
+      const menu = document.getElementById('albums-menu');
+      const btn = document.createElement('button');
+      btn.onclick = () => filterAlbum(name);
+      btn.className = 'w-full flex items-center gap-3 px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition';
+      btn.innerHTML = `<i class="fa-solid fa-folder-closed text-sky-400"></i> ${name}`;
+      menu.appendChild(btn);
     }
 
     function handleSearch(query) {
       searchQuery = query.toLowerCase();
       renderUI();
+    }
+
+    // Formateador de tiempo estilo "Hace X horas / Hace X días"
+    function timeAgo(dateString) {
+      if (!dateString) return 'Reciente';
+      const now = new Date();
+      const past = new Date(dateString);
+      const diffInHours = Math.floor((now - past) / (1000 * 60 * 60));
+      
+      if (diffInHours < 1) return 'Hace un momento';
+      if (diffInHours < 24) return `Hace ${diffInHours} horas`;
+      const diffInDays = Math.floor(diffInHours / 24);
+      if (diffInDays === 1) return 'Ayer';
+      return `Hace ${diffInDays} días`;
     }
 
     function renderUI() {
@@ -347,21 +400,26 @@
       let list = allFiles.filter(file => {
         const ext = file.key.split('.').pop().toLowerCase();
         let matchesCat = true;
-        if (currentCategory === 'images') matchesCat = ['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext);
-        if (currentCategory === 'docs') matchesCat = ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx'].includes(ext);
-        if (currentCategory === 'media') matchesCat = ['mp4', 'mp3', 'mkv', 'wav', 'avi'].includes(ext);
+        if (currentCategory === 'images') matchesCat = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(ext);
+        if (currentCategory === 'docs') matchesCat = ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt'].includes(ext);
+        if (currentCategory === 'media') matchesCat = ['mp4', 'mp3', 'mkv', 'wav', 'avi', 'mov'].includes(ext);
+
+        let matchesAlbum = true;
+        if (currentAlbum) {
+          matchesAlbum = file.key.toLowerCase().includes(currentAlbum.toLowerCase());
+        }
 
         let matchesSearch = file.key.toLowerCase().includes(searchQuery);
-        return matchesCat && matchesSearch;
+        return matchesCat && matchesAlbum && matchesSearch;
       });
 
-      // Contadores
+      // Actualizar contadores
       document.getElementById('count-all').textContent = allFiles.length;
-      document.getElementById('count-images').textContent = allFiles.filter(f => ['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(f.key.split('.').pop().toLowerCase())).length;
-      document.getElementById('count-docs').textContent = allFiles.filter(f => ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx'].includes(f.key.split('.').pop().toLowerCase())).length;
-      document.getElementById('count-media').textContent = allFiles.filter(f => ['mp4', 'mp3', 'mkv', 'wav', 'avi'].includes(f.key.split('.').pop().toLowerCase())).length;
+      document.getElementById('count-images').textContent = allFiles.filter(f => ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(f.key.split('.').pop().toLowerCase())).length;
+      document.getElementById('count-docs').textContent = allFiles.filter(f => ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt'].includes(f.key.split('.').pop().toLowerCase())).length;
+      document.getElementById('count-media').textContent = allFiles.filter(f => ['mp4', 'mp3', 'mkv', 'wav', 'avi', 'mov'].includes(f.key.split('.').pop().toLowerCase())).length;
 
-      // Calcular almacenamiento total
+      // Calcular almacenamiento
       let totalBytes = allFiles.reduce((acc, curr) => acc + (curr.size || 0), 0);
       let totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
       document.getElementById('storage-text').textContent = `${totalMB} MB / 10 GB`;
@@ -374,36 +432,52 @@
       }
       emptyState.classList.add('hidden');
 
+      // Generar tarjetas exactamente iguales al diseño original
       list.forEach(file => {
         const ext = file.key.split('.').pop().toLowerCase();
-        let isImage = ['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext);
+        let isImage = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(ext);
         let isPdf = ext === 'pdf';
-        let isMedia = ['mp4', 'mp3', 'mkv', 'wav'].includes(ext);
+        let isMedia = ['mp4', 'mp3', 'mkv', 'wav', 'avi', 'mov'].includes(ext);
 
-        let previewHTML = '';
+        let previewArea = '';
         if (isImage) {
-          previewHTML = `<div class="h-36 bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center mb-3 border border-slate-800"><img src="${file.url}" class="w-full h-full object-cover"></div>`;
+          previewArea = `
+            <div class="relative w-full h-44 bg-[#0d1320] rounded-2xl overflow-hidden mb-3 border border-slate-800/80">
+              <img src="${file.url}" class="w-full h-full object-cover">
+              <span class="absolute top-3 right-3 text-amber-400 text-xs"><i class="fa-solid fa-star"></i></span>
+            </div>`;
         } else if (isPdf) {
-          previewHTML = `<div class="h-36 bg-[#161e31] rounded-xl flex items-center justify-center mb-3 border border-slate-800"><i class="fa-solid fa-file-pdf text-4xl text-amber-400"></i></div>`;
+          previewArea = `
+            <div class="w-full h-44 bg-[#111828] rounded-2xl flex items-center justify-center mb-3 border border-slate-800/80">
+              <i class="fa-solid fa-file-lines text-5xl text-amber-400"></i>
+            </div>`;
         } else if (isMedia) {
-          previewHTML = `<div class="h-36 bg-[#161e31] rounded-xl flex items-center justify-center mb-3 border border-slate-800"><i class="fa-solid fa-video text-4xl text-purple-400"></i></div>`;
+          previewArea = `
+            <div class="w-full h-44 bg-[#111828] rounded-2xl flex items-center justify-center mb-3 border border-slate-800/80">
+              <i class="fa-solid fa-film text-5xl text-purple-400"></i>
+            </div>`;
         } else {
-          previewHTML = `<div class="h-36 bg-[#161e31] rounded-xl flex items-center justify-center mb-3 border border-slate-800"><i class="fa-solid fa-file-lines text-4xl text-sky-400"></i></div>`;
+          previewArea = `
+            <div class="w-full h-44 bg-[#111828] rounded-2xl flex items-center justify-center mb-3 border border-slate-800/80">
+              <i class="fa-solid fa-box text-5xl text-sky-400"></i>
+            </div>`;
         }
 
+        const sizeFormatted = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+        const agoFormatted = timeAgo(file.lastModified);
+
         const card = document.createElement('div');
-        card.className = 'bg-[#111827] border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between hover:border-sky-500/50 transition shadow-lg group';
+        card.className = 'bg-[#101726] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between hover:border-sky-500/50 transition duration-200 shadow-xl group cursor-pointer';
+        card.onclick = () => window.open(file.url, '_blank');
+        
         card.innerHTML = `
           <div>
-            ${previewHTML}
-            <p class="text-xs font-semibold text-white truncate mb-1" title="${file.key}">${file.key}</p>
-            <p class="text-[10px] text-slate-500">${(file.size / 1024).toFixed(1)} KB</p>
+            ${previewArea}
+            <p class="text-xs font-bold text-white truncate px-1" title="${file.key}">${file.key}</p>
           </div>
-          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
-            <a href="${file.url}" target="_blank" download class="text-xs font-medium text-sky-400 hover:underline flex items-center gap-1.5">
-              <i class="fa-solid fa-download"></i> Descargar
-            </a>
-            <span class="text-[10px] text-slate-500">${new Date(file.lastModified).toLocaleDateString()}</span>
+          <div class="flex items-center justify-between text-[11px] text-slate-500 px-1 mt-2">
+            <span>${sizeFormatted}</span>
+            <span>${agoFormatted}</span>
           </div>
         `;
         filesGrid.appendChild(card);
