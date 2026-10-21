@@ -1,166 +1,203 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Starmarc Cloud</title>
+  <title>Starmarc Cloud - BY STAMARC STUDIOS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-[#0b0f19] text-white min-h-screen font-sans">
+<body class="bg-[#0b0f19] text-white min-h-screen font-sans flex">
 
-  <!-- ==================== CONTENEDOR DE AUTENTICACIÓN ==================== -->
-  <div id="auth-container" class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-[#111827] border border-slate-800/80 rounded-2xl p-8 shadow-2xl">
-      
-      <!-- Header / Logo -->
+  <!-- ==================== PANTALLA DE AUTENTICACIÓN (LOGIN / REGISTRO) ==================== -->
+  <div id="auth-container" class="fixed inset-0 bg-[#0b0f19] z-50 flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-[#111827] border border-slate-800 rounded-2xl p-8 shadow-2xl">
       <div class="text-center mb-8">
         <div class="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-sky-500/20">
           <i class="fa-solid fa-cloud text-3xl text-white"></i>
         </div>
         <h1 class="text-2xl font-bold tracking-wide">STARMARC <span class="text-sky-400">CLOUD</span></h1>
-        <p class="text-slate-400 text-sm mt-1" id="subtitle">Crea tu cuenta para gestionar tus archivos</p>
+        <p class="text-slate-400 text-xs mt-1 uppercase tracking-wider font-semibold text-sky-500/80">By Starmarc Studios</p>
+        <p class="text-slate-400 text-sm mt-2" id="subtitle">Crea tu cuenta para gestionar tus archivos</p>
       </div>
 
-      <!-- Botones Redes Sociales -->
-      <div class="space-y-3 mb-6">
-        <button type="button" class="w-full py-2.5 px-4 bg-[#1e293b] hover:bg-slate-700 text-sm font-medium rounded-xl border border-slate-700/60 flex items-center justify-center gap-3 transition">
-          <i class="fa-brands fa-google text-red-400"></i> Continuar con Google
-        </button>
-        <button type="button" class="w-full py-2.5 px-4 bg-[#1e293b] hover:bg-slate-700 text-sm font-medium rounded-xl border border-slate-700/60 flex items-center justify-center gap-3 transition">
-          <i class="fa-brands fa-facebook text-blue-500"></i> Continuar con Facebook
-        </button>
-      </div>
-
-      <!-- Separador -->
-      <div class="relative my-6 text-center">
-        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800"></div></div>
-        <span class="relative px-3 bg-[#111827] text-xs text-slate-500 uppercase tracking-wider">o con correo</span>
-      </div>
-
-      <!-- Mensajes de Estado -->
       <div id="error-message" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl text-center"></div>
       <div id="success-message" class="hidden mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs rounded-xl text-center"></div>
 
-      <!-- Formulario de Autenticación -->
       <form id="auth-form" class="space-y-4">
         <div id="field-nombre">
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nombre Completo</label>
-          <input type="text" id="nombre" placeholder="Marvin Ramirez" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
+          <input type="text" id="nombre" placeholder="Marvin Ramirez" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
         </div>
-
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Correo Electrónico</label>
-          <input type="email" id="email" required placeholder="correo@ejemplo.com" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
+          <input type="email" id="email" required placeholder="correo@ejemplo.com" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
         </div>
-
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contraseña</label>
-          <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
+          <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm text-white">
         </div>
-
         <button type="submit" id="btn-submit" class="w-full py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 transition mt-2">
           Registrarse
         </button>
       </form>
 
-      <!-- Switch entre Login y Registro -->
       <div class="text-center mt-6 text-sm text-slate-400">
         <span id="toggle-text">¿Ya tienes una cuenta?</span>
         <button type="button" id="toggle-btn" class="text-sky-400 font-semibold hover:underline ml-1">Inicia sesión</button>
       </div>
-
     </div>
   </div>
 
 
-  <!-- ==================== CONTENEDOR DEL DASHBOARD / ARCHIVOS ==================== -->
-  <div id="dashboard-container" class="hidden min-h-screen flex flex-col">
-    
-    <!-- Navbar Superior -->
-    <header class="bg-[#111827] border-b border-slate-800/80 px-8 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center shadow-md shadow-sky-500/20">
-          <i class="fa-solid fa-cloud text-xl text-white"></i>
-        </div>
-        <span class="text-lg font-bold tracking-wide">STARMARC <span class="text-sky-400">CLOUD</span></span>
-      </div>
+  <!-- ==================== DASHBOARD PRINCIPAL (OCULTO HASTA INICIAR SESIÓN) ==================== -->
+  <div id="dashboard-container" class="hidden flex min-h-screen w-full">
 
-      <div class="flex items-center gap-4">
-        <span id="user-display" class="text-sm text-slate-300 font-medium"><i class="fa-regular fa-user mr-2"></i>Marvin Ramirez</span>
-        <button id="btn-logout" class="py-2 px-4 bg-[#1e293b] hover:bg-slate-700 text-xs font-medium text-red-400 border border-slate-700/60 rounded-xl transition flex items-center gap-2">
-          <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
-        </button>
-      </div>
-    </header>
-
-    <!-- Contenido Principal -->
-    <main class="flex-1 p-8 max-w-6xl w-full mx-auto space-y-6">
-      
-      <!-- Zona de Subida de Archivos -->
-      <section class="bg-[#111827] border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-        <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-          <i class="fa-solid fa-cloud-arrow-up text-sky-400"></i> Subir Archivo
-        </h2>
-        
-        <form id="upload-form" class="flex flex-col sm:flex-row items-center gap-4">
-          <div class="relative w-full flex items-center bg-[#0b0f19] border border-slate-800 rounded-xl p-2">
-            <input type="file" id="file-input" required class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-500 file:text-slate-950 hover:file:bg-sky-400 bg-transparent cursor-pointer">
+    <!-- SIDEBAR IZQUIERDA -->
+    <aside class="w-64 bg-[#111827] border-r border-slate-800 flex flex-col justify-between p-6 shrink-0">
+      <div>
+        <!-- Logo -->
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center shadow-md shadow-sky-500/20">
+            <i class="fa-solid fa-cloud text-xl text-white"></i>
           </div>
-          <button type="submit" id="btn-upload" class="w-full sm:w-auto px-8 py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 transition flex items-center justify-center gap-2 shrink-0">
-            <i class="fa-solid fa-upload"></i> Subir
+          <div>
+            <span class="text-base font-bold tracking-wide block leading-tight">Starmarc Cloud</span>
+            <span class="text-[10px] text-sky-400 font-semibold tracking-wider">BY STAMARC STUDIOS</span>
+          </div>
+        </div>
+
+        <!-- Botón Nuevo Archivo -->
+        <button onclick="document.getElementById('file-input-hidden').click()" class="w-full py-3 px-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold rounded-xl shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2 mb-6 transition">
+          <i class="fa-solid fa-plus"></i> Nuevo archivo
+        </button>
+
+        <!-- Menú Principal -->
+        <nav class="space-y-1 mb-8">
+          <button onclick="switchView('all')" class="nav-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium bg-sky-500/10 text-sky-400 border border-sky-500/20 transition">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-folder"></i> Mis Archivos</span>
           </button>
-        </form>
+          <button onclick="switchView('recent')" class="nav-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 transition">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-clock"></i> Recientes</span>
+          </button>
+          <button onclick="switchView('favorites')" class="nav-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 transition">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-star"></i> Favoritos</span>
+          </button>
+          <button onclick="switchView('trash')" class="nav-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 transition">
+            <span class="flex items-center gap-3"><i class="fa-solid fa-trash"></i> Papelera</span>
+          </button>
+        </nav>
 
-        <div id="upload-status" class="hidden mt-4 p-3 rounded-xl text-xs text-center"></div>
-      </section>
-
-      <!-- Panel de Mis Archivos con Filtros de Multimedia -->
-      <section class="bg-[#111827] border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-        
-        <!-- Encabezado y Filtros de Archivos -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-          <h2 class="text-lg font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-folder-open text-sky-400"></i> Mis Archivos
-          </h2>
-
-          <!-- Pestañas de Filtrado (Multimedia, Fotos, Documentos) -->
-          <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
-            <button onclick="filterCategory('all')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500 text-slate-950 transition">Todos</button>
-            <button onclick="filterCategory('images')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1e293b] text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5"><i class="fa-solid fa-image text-emerald-400"></i> Fotos</button>
-            <button onclick="filterCategory('docs')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1e293b] text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5"><i class="fa-solid fa-file-lines text-blue-400"></i> Documentos</button>
-            <button onclick="filterCategory('media')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1e293b] text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5"><i class="fa-solid fa-video text-purple-400"></i> Multimedia</button>
-            <button onclick="filterCategory('others')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1e293b] text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5"><i class="fa-solid fa-box text-amber-400"></i> Otros</button>
-            
-            <button id="btn-refresh" class="ml-2 p-2 bg-[#1e293b] hover:bg-slate-700 text-xs text-slate-300 rounded-lg border border-slate-700/60 transition" title="Actualizar">
-              <i class="fa-solid fa-rotate-right"></i>
+        <!-- Categorías -->
+        <div>
+          <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-3 px-2">Categorías</p>
+          <div class="space-y-1">
+            <button onclick="filterCategory('all')" class="cat-btn w-full flex items-center justify-between px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+              <span class="flex items-center gap-3"><i class="fa-solid fa-box text-sky-400"></i> Todos</span>
+              <span id="count-all" class="bg-slate-800 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
+            </button>
+            <button onclick="filterCategory('images')" class="cat-btn w-full flex items-center justify-between px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+              <span class="flex items-center gap-3"><i class="fa-solid fa-image text-emerald-400"></i> Imágenes</span>
+              <span id="count-images" class="bg-slate-800 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
+            </button>
+            <button onclick="filterCategory('docs')" class="cat-btn w-full flex items-center justify-between px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+              <span class="flex items-center gap-3"><i class="fa-solid fa-file-lines text-amber-400"></i> Documentos</span>
+              <span id="count-docs" class="bg-slate-800 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
+            </button>
+            <button onclick="filterCategory('media')" class="cat-btn w-full flex items-center justify-between px-4 py-2 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 transition">
+              <span class="flex items-center gap-3"><i class="fa-solid fa-video text-purple-400"></i> Multimedia</span>
+              <span id="count-media" class="bg-slate-800 px-2 py-0.5 rounded-md text-[10px] text-slate-400">0</span>
             </button>
           </div>
         </div>
+      </div>
 
-        <!-- Lista de Archivos -->
-        <div id="files-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Los archivos cargados se insertan dinámicamente aquí -->
+      <!-- Almacenamiento Utilizado -->
+      <div class="bg-slate-900/80 border border-slate-800/80 p-4 rounded-xl">
+        <div class="flex justify-between text-xs mb-2">
+          <span class="text-slate-400 font-medium">Almacenamiento</span>
+          <span id="storage-text" class="text-sky-400 font-bold">0 MB / 10 GB</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+          <div id="storage-bar" class="bg-sky-500 h-full w-[1%] transition-all duration-500"></div>
+        </div>
+      </div>
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL DERECHA -->
+    <main class="flex-1 flex flex-col min-w-0 bg-[#0b0f19]">
+      
+      <!-- Top Bar Superior -->
+      <header class="h-20 bg-[#111827] border-b border-slate-800 px-8 flex items-center justify-between gap-6 shrink-0">
+        <!-- Buscador -->
+        <div class="relative flex-1 max-w-xl">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+          <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Buscar en Starmarc Cloud..." class="w-full bg-[#0b0f19] border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500 transition">
+        </div>
+
+        <!-- Perfil Usuario & Botón Subir Archivo -->
+        <div class="flex items-center gap-4">
+          <button onclick="document.getElementById('file-input-hidden').click()" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Subir archivo
+          </button>
+          <div class="flex items-center gap-3 pl-4 border-l border-slate-800">
+            <div id="user-avatar" class="w-9 h-9 bg-sky-600 rounded-xl font-bold flex items-center justify-center text-xs text-white shadow">SA</div>
+            <div class="hidden sm:block">
+              <p id="user-name-display" class="text-xs font-bold text-white">Starmarc Admin</p>
+              <p id="user-email-display" class="text-[10px] text-slate-400">admin@starmarc.com</p>
+            </div>
+            <button onclick="logout()" class="ml-2 p-2 text-slate-400 hover:text-red-400 transition" title="Cerrar sesión">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Input File oculto para subidas -->
+      <input type="file" id="file-input-hidden" onchange="uploadFile(this)" class="hidden">
+
+      <!-- Contenido / Listado de Archivos -->
+      <div class="flex-1 p-8 overflow-y-auto">
+        
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 id="view-title" class="text-xl font-bold text-white flex items-center gap-3">
+              Mis Archivos <span id="category-badge" class="bg-slate-800 text-slate-300 text-xs px-2.5 py-0.5 rounded-lg font-normal">Todos</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Arrastra y suelta tus archivos en cualquier lugar o haz clic en "Subir archivo" para añadirlos.</p>
+          </div>
+          <div class="flex items-center gap-2 bg-[#111827] border border-slate-800 p-1 rounded-xl">
+            <button class="p-2 bg-slate-800 text-sky-400 rounded-lg text-xs"><i class="fa-solid fa-grip"></i></button>
+            <button class="p-2 text-slate-500 hover:text-white rounded-lg text-xs transition"><i class="fa-solid fa-list"></i></button>
+          </div>
+        </div>
+
+        <div id="upload-status" class="hidden mb-6 p-3 rounded-xl text-xs text-center"></div>
+
+        <!-- Grid de Archivos -->
+        <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <!-- Tarjetas dinámicas aquí -->
         </div>
 
         <!-- Estado Vacío -->
-        <div id="empty-state" class="text-center py-12 text-slate-500 hidden">
-          <i class="fa-solid fa-box-open text-4xl mb-3 text-slate-600"></i>
-          <p class="text-sm">No hay archivos en esta categoría.</p>
+        <div id="empty-state" class="text-center py-20 text-slate-500 hidden">
+          <i class="fa-solid fa-box-open text-5xl mb-3 text-slate-600"></i>
+          <p class="text-sm">No hay archivos en esta sección.</p>
         </div>
-      </section>
 
+      </div>
     </main>
   </div>
 
 
-  <!-- ==================== LÓGICA DE JAVASCRIPT ==================== -->
+  <!-- ==================== SCRIPT DE FUNCIONALIDAD ==================== -->
   <script>
-    let isRegisterMode = true;
-    let allFiles = []; // Almacena todos los archivos descargados de R2
+    let allFiles = [];
     let currentCategory = 'all';
+    let currentView = 'all';
+    let searchQuery = '';
 
-    // Elementos DOM
     const authContainer = document.getElementById('auth-container');
     const dashboardContainer = document.getElementById('dashboard-container');
     const authForm = document.getElementById('auth-form');
@@ -171,22 +208,16 @@
     const subtitle = document.getElementById('subtitle');
     const errorMessage = document.getElementById('error-message');
     const successMessage = document.getElementById('success-message');
-    const userDisplay = document.getElementById('user-display');
-    const btnLogout = document.getElementById('btn-logout');
-
-    const uploadForm = document.getElementById('upload-form');
-    const fileInput = document.getElementById('file-input');
-    const uploadStatus = document.getElementById('upload-status');
-    const filesList = document.getElementById('files-list');
+    const filesGrid = document.getElementById('files-grid');
     const emptyState = document.getElementById('empty-state');
-    const btnRefresh = document.getElementById('btn-refresh');
+    const uploadStatus = document.getElementById('upload-status');
 
-    // Cambiar entre Registro e Inicio de Sesión
+    let isRegisterMode = true;
+
     toggleBtn.addEventListener('click', () => {
       isRegisterMode = !isRegisterMode;
       errorMessage.classList.add('hidden');
       successMessage.classList.add('hidden');
-
       if (isRegisterMode) {
         fieldNombre.classList.remove('hidden');
         btnSubmit.textContent = 'Registrarse';
@@ -202,7 +233,6 @@
       }
     });
 
-    // Login / Registro Form
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       errorMessage.classList.add('hidden');
@@ -210,166 +240,175 @@
 
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const nombre = isRegisterMode ? document.getElementById('nombre').value : '';
-
+      const nombre = isRegisterMode ? document.getElementById('nombre').value : 'Usuario';
       const endpoint = isRegisterMode ? '/api/register' : '/api/login';
-      const payload = isRegisterMode ? { nombre, email, password } : { email, password };
 
       try {
-        const response = await fetch(endpoint, {
+        const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ nombre, email, password })
         });
+        const data = await res.json();
 
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-          successMessage.textContent = isRegisterMode ? '¡Usuario registrado correctamente!' : '¡Inicio de sesión exitoso!';
+        if (res.ok && data.success) {
+          successMessage.textContent = '¡Acceso exitoso!';
           successMessage.classList.remove('hidden');
-
           setTimeout(() => {
-            showDashboard(data.user?.nombre || email);
+            startDashboard(data.user?.nombre || nombre, email);
           }, 800);
-
         } else {
-          errorMessage.textContent = data.error || 'Error en la solicitud';
+          errorMessage.textContent = data.error || 'Error en las credenciales';
           errorMessage.classList.remove('hidden');
         }
       } catch (err) {
-        console.error('Error:', err);
         errorMessage.textContent = 'Error al conectar con el servidor';
         errorMessage.classList.remove('hidden');
       }
     });
 
-    function showDashboard(username) {
+    function startDashboard(name, email) {
       authContainer.classList.add('hidden');
       dashboardContainer.classList.remove('hidden');
-      userDisplay.innerHTML = `<i class="fa-regular fa-user mr-2"></i>${username}`;
-      loadFiles();
+      document.getElementById('user-name-display').textContent = name;
+      document.getElementById('user-email-display').textContent = email;
+      document.getElementById('user-avatar').textContent = name.substring(0, 2).toUpperCase();
+      loadFilesFromCloud();
     }
 
-    btnLogout.addEventListener('click', () => {
+    function logout() {
       dashboardContainer.classList.add('hidden');
       authContainer.classList.remove('hidden');
       authForm.reset();
-      successMessage.classList.add('hidden');
-      errorMessage.classList.add('hidden');
-    });
+    }
 
-    // Cargar Archivos desde R2
-    async function loadFiles() {
-      filesList.innerHTML = '<div class="col-span-full text-center py-6 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Cargando archivos...</div>';
-      emptyState.classList.add('hidden');
-
+    async function loadFilesFromCloud() {
       try {
-        const response = await fetch('/api/files');
-        const data = await response.json();
-
-        if (response.ok && data.files) {
+        const res = await fetch('/api/files');
+        const data = await res.json();
+        if (res.ok && data.files) {
           allFiles = data.files;
-          renderFiles();
-        } else {
-          allFiles = [];
-          renderFiles();
+          renderUI();
         }
       } catch (err) {
-        console.error('Error al cargar archivos:', err);
-        filesList.innerHTML = '<div class="col-span-full text-center py-6 text-red-400">Error al conectar con el almacenamiento R2</div>';
+        console.error('Error cargando archivos:', err);
       }
     }
 
-    // Filtrar por Categorías
-    function filterCategory(cat) {
-      currentCategory = cat;
-      renderFiles();
-    }
-
-    function renderFiles() {
-      filesList.innerHTML = '';
-
-      let filtered = allFiles.filter(file => {
-        const ext = file.key.split('.').pop().toLowerCase();
-        if (currentCategory === 'images') return ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext);
-        if (currentCategory === 'docs') return ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext);
-        if (currentCategory === 'media') return ['mp4', 'mp3', 'mkv', 'wav', 'avi', 'mov'].includes(ext);
-        if (currentCategory === 'others') return !['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx', 'mp4', 'mp3', 'mkv', 'wav'].includes(ext);
-        return true;
-      });
-
-      if (filtered.length === 0) {
-        emptyState.classList.remove('hidden');
-        return;
-      }
-
-      emptyState.classList.add('hidden');
-
-      filtered.forEach(file => {
-        const ext = file.key.split('.').pop().toLowerCase();
-        let iconClass = 'fa-file text-slate-400';
-
-        if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) iconClass = 'fa-image text-emerald-400';
-        else if (['pdf', 'doc', 'docx', 'txt'].includes(ext)) iconClass = 'fa-file-lines text-blue-400';
-        else if (['mp4', 'mp3', 'mkv', 'wav'].includes(ext)) iconClass = 'fa-video text-purple-400';
-
-        const card = document.createElement('div');
-        card.className = 'bg-[#0b0f19] border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between hover:border-sky-500/50 transition shadow-md';
-        card.innerHTML = `
-          <div class="flex items-start gap-3 mb-3">
-            <div class="w-10 h-10 bg-[#1e293b] rounded-lg flex items-center justify-center shrink-0">
-              <i class="fa-solid ${iconClass} text-lg"></i>
-            </div>
-            <div class="overflow-hidden">
-              <p class="text-sm font-semibold text-white truncate" title="${file.key}">${file.key}</p>
-              <p class="text-xs text-slate-500">${(file.size / 1024).toFixed(1)} KB</p>
-            </div>
-          </div>
-          <a href="${file.url}" target="_blank" download class="w-full py-2 bg-[#1e293b] hover:bg-sky-500 hover:text-slate-950 text-slate-300 text-xs font-semibold rounded-lg text-center transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-download"></i> Descargar
-          </a>
-        `;
-        filesList.appendChild(card);
-      });
-    }
-
-    btnRefresh.addEventListener('click', loadFiles);
-
-    // Subir Archivo
-    uploadForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!fileInput.files[0]) return;
-
+    async function uploadFile(input) {
+      if (!input.files[0]) return;
+      const file = input.files[0];
       const formData = new FormData();
-      formData.append('file', fileInput.files[0]);
+      formData.append('file', file);
 
-      uploadStatus.className = 'mt-4 p-3 rounded-xl text-xs text-center bg-sky-500/10 border border-sky-500/30 text-sky-400';
-      uploadStatus.textContent = 'Subiendo archivo a Cloudflare R2...';
+      uploadStatus.className = 'mb-6 p-3 rounded-xl text-xs text-center bg-sky-500/10 border border-sky-500/30 text-sky-400';
+      uploadStatus.textContent = `Subiendo "${file.name}" a Cloudflare R2...`;
       uploadStatus.classList.remove('hidden');
 
       try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-          uploadStatus.className = 'mt-4 p-3 rounded-xl text-xs text-center bg-emerald-500/10 border border-emerald-500/30 text-emerald-400';
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          uploadStatus.className = 'mb-6 p-3 rounded-xl text-xs text-center bg-emerald-500/10 border border-emerald-500/30 text-emerald-400';
           uploadStatus.textContent = '¡Archivo subido con éxito!';
-          uploadForm.reset();
-          loadFiles();
+          input.value = '';
+          loadFilesFromCloud();
+          setTimeout(() => uploadStatus.classList.add('hidden'), 3000);
         } else {
-          uploadStatus.className = 'mt-4 p-3 rounded-xl text-xs text-center bg-red-500/10 border border-red-500/30 text-red-400';
+          uploadStatus.className = 'mb-6 p-3 rounded-xl text-xs text-center bg-red-500/10 border border-red-500/30 text-red-400';
           uploadStatus.textContent = data.error || 'Fallo al guardar el archivo en R2';
         }
       } catch (err) {
-        console.error('Error al subir:', err);
-        uploadStatus.className = 'mt-4 p-3 rounded-xl text-xs text-center bg-red-500/10 border border-red-500/30 text-red-400';
+        uploadStatus.className = 'mb-6 p-3 rounded-xl text-xs text-center bg-red-500/10 border border-red-500/30 text-red-400';
         uploadStatus.textContent = 'Fallo al guardar el archivo en R2';
       }
-    });
+    }
+
+    function switchView(view) {
+      currentView = view;
+      document.getElementById('view-title').innerHTML = view === 'recent' ? 'Archivos Recientes' : view === 'favorites' ? 'Favoritos' : view === 'trash' ? 'Papelera' : 'Mis Archivos <span id="category-badge" class="bg-slate-800 text-slate-300 text-xs px-2.5 py-0.5 rounded-lg font-normal">Todos</span>';
+      renderUI();
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      currentView = 'all';
+      renderUI();
+    }
+
+    function handleSearch(query) {
+      searchQuery = query.toLowerCase();
+      renderUI();
+    }
+
+    function renderUI() {
+      filesGrid.innerHTML = '';
+
+      let list = allFiles.filter(file => {
+        const ext = file.key.split('.').pop().toLowerCase();
+        let matchesCat = true;
+        if (currentCategory === 'images') matchesCat = ['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext);
+        if (currentCategory === 'docs') matchesCat = ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx'].includes(ext);
+        if (currentCategory === 'media') matchesCat = ['mp4', 'mp3', 'mkv', 'wav', 'avi'].includes(ext);
+
+        let matchesSearch = file.key.toLowerCase().includes(searchQuery);
+        return matchesCat && matchesSearch;
+      });
+
+      // Contadores
+      document.getElementById('count-all').textContent = allFiles.length;
+      document.getElementById('count-images').textContent = allFiles.filter(f => ['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(f.key.split('.').pop().toLowerCase())).length;
+      document.getElementById('count-docs').textContent = allFiles.filter(f => ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx'].includes(f.key.split('.').pop().toLowerCase())).length;
+      document.getElementById('count-media').textContent = allFiles.filter(f => ['mp4', 'mp3', 'mkv', 'wav', 'avi'].includes(f.key.split('.').pop().toLowerCase())).length;
+
+      // Calcular almacenamiento total
+      let totalBytes = allFiles.reduce((acc, curr) => acc + (curr.size || 0), 0);
+      let totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
+      document.getElementById('storage-text').textContent = `${totalMB} MB / 10 GB`;
+      let percent = Math.min((totalMB / 10240) * 100, 100);
+      document.getElementById('storage-bar').style.width = `${Math.max(percent, 1)}%`;
+
+      if (list.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      list.forEach(file => {
+        const ext = file.key.split('.').pop().toLowerCase();
+        let isImage = ['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext);
+        let isPdf = ext === 'pdf';
+        let isMedia = ['mp4', 'mp3', 'mkv', 'wav'].includes(ext);
+
+        let previewHTML = '';
+        if (isImage) {
+          previewHTML = `<div class="h-36 bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center mb-3 border border-slate-800"><img src="${file.url}" class="w-full h-full object-cover"></div>`;
+        } else if (isPdf) {
+          previewHTML = `<div class="h-36 bg-[#161e31] rounded-xl flex items-center justify-center mb-3 border border-slate-800"><i class="fa-solid fa-file-pdf text-4xl text-amber-400"></i></div>`;
+        } else if (isMedia) {
+          previewHTML = `<div class="h-36 bg-[#161e31] rounded-xl flex items-center justify-center mb-3 border border-slate-800"><i class="fa-solid fa-video text-4xl text-purple-400"></i></div>`;
+        } else {
+          previewHTML = `<div class="h-36 bg-[#161e31] rounded-xl flex items-center justify-center mb-3 border border-slate-800"><i class="fa-solid fa-file-lines text-4xl text-sky-400"></i></div>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'bg-[#111827] border border-slate-800/80 rounded-2xl p-4 flex flex-col justify-between hover:border-sky-500/50 transition shadow-lg group';
+        card.innerHTML = `
+          <div>
+            ${previewHTML}
+            <p class="text-xs font-semibold text-white truncate mb-1" title="${file.key}">${file.key}</p>
+            <p class="text-[10px] text-slate-500">${(file.size / 1024).toFixed(1)} KB</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+            <a href="${file.url}" target="_blank" download class="text-xs font-medium text-sky-400 hover:underline flex items-center gap-1.5">
+              <i class="fa-solid fa-download"></i> Descargar
+            </a>
+            <span class="text-[10px] text-slate-500">${new Date(file.lastModified).toLocaleDateString()}</span>
+          </div>
+        `;
+        filesGrid.appendChild(card);
+      });
+    }
   </script>
 
 </body>
