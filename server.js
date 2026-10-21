@@ -1,11 +1,11 @@
 const express = require('express');
-const { S3Client, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const multer = require('multer');
 const crypto = require('crypto');
-const fs = require('fs');
 const app = express();
 
-const upload = multer({ dest: 'uploads/' });
+// Configuración en memoria RAM (envía los archivos directo a R2 sin guardarlos en equipos locales)
+const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -29,14 +29,14 @@ const BUCKET_NAME = process.env.R2_BUCKET_NAME;
 // ==========================================
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
-    if (email === "marvinalfredoramires@gmail.com" && password === "Marvin503") {
+    if (email === "admin@starmarc.com" && password === "123456") {
         return res.status(200).json({ success: true });
     }
     return res.status(401).json({ success: false, message: 'Credenciales incorrectas' });
 });
 
 // ==========================================
-// 2. SUBIR ARCHIVO A R2
+// 2. SUBIR DIRECTAMENTE A R2
 // ==========================================
 app.post('/api/upload', upload.single('file'), async (req, res) => {
     try {
@@ -44,19 +44,17 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             return res.status(400).json({ success: false, message: 'No se seleccionó ningún archivo.' });
         }
 
-        const fileStream = fs.createReadStream(req.file.path);
         const uniqueSuffix = crypto.randomBytes(6).toString('hex');
         const fileName = `${uniqueSuffix}-${req.file.originalname}`;
 
         const uploadParams = {
             Bucket: BUCKET_NAME,
             Key: fileName,
-            Body: fileStream,
+            Body: req.file.buffer,
             ContentType: req.file.mimetype,
         };
 
         await s3Client.send(new PutObjectCommand(uploadParams));
-        fs.unlinkSync(req.file.path); // Limpiar archivo temporal
 
         return res.status(200).json({
             success: true,
@@ -136,7 +134,7 @@ app.get('/', (req, res) => {
 });
 
 // ==========================================
-// 4. PANEL PRINCIPAL (DASHBOARD IDÉNTICO)
+// 4. PANEL PRINCIPAL (INTERFAZ IDÉNTICA SOLICITADA)
 // ==========================================
 app.get('/dashboard', (req, res) => {
     res.send(`
@@ -165,35 +163,35 @@ app.get('/dashboard', (req, res) => {
                     </div>
                 </div>
 
-                <!-- Sección Navegación -->
+                <!-- Navegación -->
                 <div class="mb-6">
                     <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-3">Navegación</p>
                     <nav class="space-y-1.5">
                         <a href="#" onclick="filterCategory('todos')" id="nav-todos" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium bg-blue-600/10 text-sky-400 border border-blue-500/20 transition">
                             <div class="flex items-center space-x-3"><i class="fa-solid fa-folder w-5"></i><span>Mis Archivos</span></div>
-                            <span id="count-todos" class="bg-blue-500/20 text-xs px-2 py-0.5 rounded-full">3</span>
+                            <span class="bg-blue-500/20 text-xs px-2 py-0.5 rounded-full">3</span>
                         </a>
                         <a href="#" onclick="filterCategory('fotos')" id="nav-fotos" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition">
                             <div class="flex items-center space-x-3"><i class="fa-solid fa-image w-5"></i><span>Fotos</span></div>
-                            <span id="count-fotos" class="text-xs px-2 py-0.5 rounded-full bg-slate-800">1</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800">1</span>
                         </a>
                         <a href="#" onclick="filterCategory('videos')" id="nav-videos" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition">
                             <div class="flex items-center space-x-3"><i class="fa-solid fa-video w-5"></i><span>Videos</span></div>
-                            <span id="count-videos" class="text-xs px-2 py-0.5 rounded-full bg-slate-800">1</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800">1</span>
                         </a>
                         <a href="#" onclick="filterCategory('documentos')" id="nav-documentos" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition">
                             <div class="flex items-center space-x-3"><i class="fa-solid fa-file-lines w-5"></i><span>Documentos</span></div>
-                            <span id="count-documentos" class="text-xs px-2 py-0.5 rounded-full bg-slate-800">1</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800">1</span>
                         </a>
                     </nav>
                 </div>
 
-                <!-- Sección Papelera -->
+                <!-- Papelera -->
                 <div>
                     <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-3">Papelera</p>
                     <a href="#" onclick="filterCategory('papelera')" id="nav-papelera" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition">
                         <div class="flex items-center space-x-3"><i class="fa-solid fa-trash w-5"></i><span>Papelera</span></div>
-                        <span id="count-papelera" class="text-xs px-2 py-0.5 rounded-full bg-slate-800">0</span>
+                        <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800">0</span>
                     </a>
                 </div>
             </div>
@@ -202,10 +200,10 @@ app.get('/dashboard', (req, res) => {
             <div class="bg-[#131a2a] p-4 rounded-2xl border border-slate-800/80">
                 <div class="flex justify-between text-xs mb-2">
                     <span class="text-slate-300 font-medium">Almacenamiento</span>
-                    <span id="storageText" class="text-sky-400 font-semibold">23.9 MB / 1 GB</span>
+                    <span class="text-sky-400 font-semibold">23.9 MB / 1 GB</span>
                 </div>
                 <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-2">
-                    <div id="storageBar" class="bg-gradient-to-r from-blue-500 to-sky-400 h-full rounded-full" style="width: 2.3%;"></div>
+                    <div class="bg-gradient-to-r from-blue-500 to-sky-400 h-full rounded-full" style="width: 2.3%;"></div>
                 </div>
                 <p class="text-[11px] text-slate-500">Plan Gratuito de Starmarc Cloud</p>
             </div>
@@ -238,7 +236,7 @@ app.get('/dashboard', (req, res) => {
                 </div>
             </header>
 
-            <!-- Área de Archivos -->
+            <!-- Sección de Archivos -->
             <main class="p-8 max-w-7xl mx-auto flex-1 w-full">
                 <div class="flex justify-between items-end mb-6">
                     <div>
@@ -254,9 +252,8 @@ app.get('/dashboard', (req, res) => {
                     </div>
                 </div>
 
-                <!-- Cuadrícula de Archivos -->
+                <!-- Cuadrícula -->
                 <div id="fileGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    <!-- Archivo 1: Imagen -->
                     <div class="file-card bg-[#131a2a] border border-slate-800/80 rounded-2xl p-3 hover:border-slate-700 transition group cursor-pointer relative" data-type="fotos" data-name="Logo_Starmarc_Studios.png">
                         <div class="relative h-40 rounded-xl overflow-hidden mb-3 bg-slate-900 flex items-center justify-center">
                             <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
@@ -268,7 +265,6 @@ app.get('/dashboard', (req, res) => {
                         </div>
                     </div>
 
-                    <!-- Archivo 2: PDF -->
                     <div class="file-card bg-[#131a2a] border border-slate-800/80 rounded-2xl p-3 hover:border-slate-700 transition group cursor-pointer relative" data-type="documentos" data-name="Arquitectura_Nube_v1.pdf">
                         <div class="h-40 rounded-xl bg-[#0f1523] flex items-center justify-center mb-3">
                             <i class="fa-solid fa-file-pdf text-amber-500 text-4xl"></i>
@@ -280,7 +276,6 @@ app.get('/dashboard', (req, res) => {
                         </div>
                     </div>
 
-                    <!-- Archivo 3: Video -->
                     <div class="file-card bg-[#131a2a] border border-slate-800/80 rounded-2xl p-3 hover:border-slate-700 transition group cursor-pointer relative" data-type="videos" data-name="Demo_Presentacion.mp4">
                         <div class="h-40 rounded-xl bg-[#0f1523] flex items-center justify-center mb-3">
                             <i class="fa-solid fa-film text-purple-400 text-4xl"></i>
@@ -296,7 +291,7 @@ app.get('/dashboard', (req, res) => {
         </div>
 
         <script>
-            // Lógica para Subir a Cloudflare R2
+            // Conexión dinámica con Cloudflare R2 al presionar Subir Archivo
             document.getElementById('fileInput').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
@@ -306,7 +301,7 @@ app.get('/dashboard', (req, res) => {
 
                 const alertBox = document.createElement('div');
                 alertBox.className = 'fixed bottom-5 right-5 bg-sky-600 text-white px-4 py-2 rounded-xl shadow-xl z-50 text-sm';
-                alertBox.innerText = 'Subiendo archivo a Cloudflare R2...';
+                alertBox.innerText = 'Subiendo directo a tu nube R2...';
                 document.body.appendChild(alertBox);
 
                 try {
@@ -317,7 +312,7 @@ app.get('/dashboard', (req, res) => {
                     const data = await res.json();
 
                     if (res.ok && data.success) {
-                        alertBox.innerText = '¡Archivo subido exitosamente a R2!';
+                        alertBox.innerText = '¡Guardado con éxito en tu nube R2!';
                         setTimeout(() => location.reload(), 1500);
                     } else {
                         alertBox.className = 'fixed bottom-5 right-5 bg-red-600 text-white px-4 py-2 rounded-xl shadow-xl z-50 text-sm';
@@ -329,7 +324,6 @@ app.get('/dashboard', (req, res) => {
                 }
             });
 
-            // Filtrado por categoría en la barra lateral
             function filterCategory(category) {
                 document.querySelectorAll('aside nav a').forEach(el => {
                     el.className = "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition";
@@ -342,11 +336,8 @@ app.get('/dashboard', (req, res) => {
                 document.getElementById('currentCategoryTitle').innerText = category === 'todos' ? 'Mis Archivos' : category.charAt(0).toUpperCase() + category.slice(1);
                 document.getElementById('currentCategoryBadge').innerText = category.charAt(0).toUpperCase() + category.slice(1);
 
-                const cards = document.querySelectorAll('.file-card');
-                cards.forEach(card => {
-                    if (category === 'todos') {
-                        card.style.display = 'block';
-                    } else if (card.getAttribute('data-type') === category) {
+                document.querySelectorAll('.file-card').forEach(card => {
+                    if (category === 'todos' || card.getAttribute('data-type') === category) {
                         card.style.display = 'block';
                     } else {
                         card.style.display = 'none';
@@ -354,16 +345,11 @@ app.get('/dashboard', (req, res) => {
                 });
             }
 
-            // Buscador en tiempo real
             function searchFiles(query) {
                 const q = query.toLowerCase();
                 document.querySelectorAll('.file-card').forEach(card => {
                     const name = card.getAttribute('data-name').toLowerCase();
-                    if (name.includes(q)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
+                    card.style.display = name.includes(q) ? 'block' : 'none';
                 });
             }
         </script>
