@@ -12,8 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
 
-    // Credenciales válidas requeridas
-    const emailValido = "marvinalfredoramires@gmail.com";
+    // CREDENCIALES VÁLIDAS DE ACCESO (Cámbialas por tus datos deseados)
+    const emailValido = "marvinalfredoramires@gmail.com"; 
     const passwordValida = "Marvin503"; 
 
     // Validación estricta: Deniega el acceso si el correo o la contraseña no coinciden
@@ -32,7 +32,7 @@ app.post('/api/login', (req, res) => {
 });
 
 // ==========================================
-// 2. INTERFAZ Y VALIDACIÓN EN EL FRONTEND
+// 2. INTERFAZ Y VALIDACIÓN EN EL FRONTEND (LOGIN)
 // ==========================================
 app.get('/', (req, res) => {
     res.send(`
@@ -65,7 +65,6 @@ app.get('/', (req, res) => {
         </div>
 
         <script>
-            // Lógica de control en el navegador
             document.getElementById('loginForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 
@@ -84,12 +83,11 @@ app.get('/', (req, res) => {
 
                     const data = await response.json();
 
-                    // BLOQUEO ESTRICTO: Solo permite avanzar si el servidor valida las credenciales
+                    // SI LAS CREDENCIALES SON CORRECTAS -> REDIRIGE AL PANEL
                     if (response.ok && data.success) {
-                        alert('¡Acceso concedido!');
-                        // window.location.href = '/dashboard'; // Redirección al panel
+                        window.location.href = '/dashboard'; 
                     } else {
-                        // Muestra el mensaje de error y detiene el acceso
+                        // SI SON INCORRECTAS -> MUESTRA ERROR Y BLOQUEA
                         errorMsg.textContent = data.message || 'Credenciales inválidas';
                         errorMsg.classList.remove('hidden');
                     }
@@ -105,7 +103,35 @@ app.get('/', (req, res) => {
 });
 
 // ==========================================
-// 3. PUERTO Y SERVIDOR
+// 3. VISTA DEL PANEL PRINCIPAL (DASHBOARD)
+// ==========================================
+app.get('/dashboard', (req, res) => {
+    res.send(`
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Starmarc Cloud - Panel Principal</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-slate-900 text-white p-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-between items-center mb-8 border-b border-slate-700 pb-4">
+                <h1 class="text-3xl font-bold text-sky-400">Bienvenido al Panel de Starmarc Cloud</h1>
+                <a href="/" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">Cerrar Sesión</a>
+            </div>
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+                <p class="text-slate-300">Has ingresado correctamente a la plataforma. Tu sesión está validada en el servidor.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    `);
+});
+
+// ==========================================
+// 4. INICIO DEL SERVIDOR
 // ==========================================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
