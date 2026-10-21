@@ -1,457 +1,144 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stamarc Cloud Enterprise | Stamarc Estudios</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #0f172a; color: #f8fafc; }
-        .sidebar-active { background-color: #1e293b; border-left: 4px solid #38bdf8; color: #38bdf8; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starmarc Cloud</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="h-screen flex overflow-hidden font-sans">
+<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4">
 
-    <!-- MODAL DE AUTENTICACIÓN -->
-    <div id="authModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center z-50">
-        <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl w-full max-w-md shadow-2xl relative">
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center font-black text-2xl text-white shadow-lg shadow-sky-500/30 mx-auto mb-3">
-                    S
-                </div>
-                <h2 class="text-xl font-bold text-white tracking-wide">STAMARC <span class="text-sky-400">CLOUD</span></h2>
-                <p id="authSubtitle" class="text-xs text-slate-400 mt-1">Inicia sesión para acceder a tus archivos privados</p>
-            </div>
-
-            <!-- BOTONES DE LOGIN SOCIAL -->
-            <div class="space-y-3 mb-5">
-                <button onclick="socialLogin('Google')" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-200 font-medium py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-3 text-sm">
-                    <i class="fa-brands fa-google text-rose-500 text-base"></i> Continuar con Google
-                </button>
-                <button onclick="socialLogin('Facebook')" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-200 font-medium py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-3 text-sm">
-                    <i class="fa-brands fa-facebook text-blue-500 text-base"></i> Continuar con Facebook
-                </button>
-            </div>
-
-            <div class="flex items-center my-4">
-                <div class="flex-grow border-t border-slate-800"></div>
-                <span class="px-3 text-[11px] text-slate-500 uppercase font-semibold">o con correo</span>
-                <div class="flex-grow border-t border-slate-800"></div>
-            </div>
-
-            <!-- Formulario tradicional -->
-            <form id="authForm" onsubmit="handleAuth(event)" class="space-y-4">
-                <div id="nameField" class="hidden">
-                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Nombre Completo</label>
-                    <input type="text" id="authName" placeholder="Tu nombre" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-sky-500 transition">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Correo Electrónico</label>
-                    <input type="email" id="authEmail" required placeholder="correo@ejemplo.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-sky-500 transition">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-400 uppercase mb-1">Contraseña</label>
-                    <input type="password" id="authPassword" required placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-sky-500 transition">
-                </div>
-
-                <div id="authError" class="hidden text-xs text-rose-400 font-medium text-center"></div>
-
-                <button type="submit" id="authSubmitBtn" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-2.5 rounded-xl shadow-lg shadow-sky-500/20 transition text-sm">
-                    Iniciar Sesión
-                </button>
-            </form>
-
-            <div class="mt-4 text-center text-xs text-slate-400">
-                <span id="toggleAuthText">¿No tienes cuenta?</span>
-                <button onclick="toggleAuthMode()" id="toggleAuthBtn" class="text-sky-400 font-semibold hover:underline ml-1">Regístrate gratis</button>
-            </div>
-        </div>
+  <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+    
+    <!-- Header / Logo -->
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-sky-500/20">
+        <i class="fa-solid fa-cloud text-3xl text-white"></i>
+      </div>
+      <h1 class="text-2xl font-bold tracking-wide">STARMARC <span class="text-sky-400">CLOUD</span></h1>
+      <p class="text-slate-400 text-sm mt-1" id="subtitle">Crea tu cuenta para gestionar tus archivos</p>
     </div>
 
-    <!-- BARRA LATERAL -->
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0">
-        <div>
-            <div class="p-6 border-b border-slate-800 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-sky-500/20">
-                    S
-                </div>
-                <div>
-                    <h1 class="text-base font-bold text-white tracking-wide">STAMARC <span class="text-sky-400">CLOUD</span></h1>
-                    <p class="text-[10px] text-slate-400 font-semibold tracking-widest uppercase">Stamarc Estudios</p>
-                </div>
-            </div>
-
-            <!-- Usuario activo -->
-            <div class="p-4 border-b border-slate-800/60 bg-slate-950/40 flex items-center justify-between">
-                <div class="flex items-center gap-2 overflow-hidden">
-                    <div class="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-xs text-sky-400 font-bold border border-slate-700">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <span id="userNameDisplay" class="text-xs font-semibold text-slate-200 truncate">Usuario</span>
-                </div>
-                <button onclick="logout()" class="text-slate-500 hover:text-rose-400 p-1 rounded-lg transition" title="Cerrar sesión">
-                    <i class="fa-solid fa-right-from-bracket text-sm"></i>
-                </button>
-            </div>
-
-            <div class="p-4">
-                <button onclick="document.getElementById('fileInput').click()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold py-3 px-4 rounded-xl shadow-lg shadow-sky-500/20 transition flex items-center justify-center gap-2 text-sm">
-                    <i class="fa-solid fa-cloud-arrow-up text-base"></i> Subir Archivo
-                </button>
-                <input type="file" id="fileInput" class="hidden">
-            </div>
-
-            <nav class="mt-1 space-y-1 px-3">
-                <button onclick="filterCategory('all')" id="btn-all" class="sidebar-active w-full text-left px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-3 hover:bg-slate-800 transition">
-                    <i class="fa-solid fa-hard-drive w-5 text-sky-400"></i> Todos mis archivos
-                </button>
-                <button onclick="filterCategory('docs')" id="btn-docs" class="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-3">
-                    <i class="fa-solid fa-file-lines w-5 text-amber-400"></i> Documentos
-                </button>
-                <button onclick="filterCategory('images')" id="btn-images" class="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-3">
-                    <i class="fa-solid fa-image w-5 text-emerald-400"></i> Fotos e Imágenes
-                </button>
-                <button onclick="filterCategory('media')" id="btn-media" class="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-3">
-                    <i class="fa-solid fa-film w-5 text-purple-400"></i> Videos y Audio
-                </button>
-            </nav>
-        </div>
-
-        <div class="p-5 border-t border-slate-800 bg-slate-900/50">
-            <div class="flex items-center justify-between text-xs mb-2">
-                <span class="text-slate-400 font-medium"><i class="fa-solid fa-hard-drive text-sky-400 mr-1.5"></i> Mi Espacio Ocupado</span>
-                <span id="storageText" class="text-sky-400 font-bold">0 MB</span>
-            </div>
-            <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700/50">
-                <div id="storageBar" class="bg-gradient-to-r from-sky-500 to-indigo-500 h-full w-0 transition-all duration-500"></div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- PANEL PRINCIPAL -->
-    <div class="flex-1 flex flex-col min-w-0 bg-slate-950">
-        <header class="h-16 border-b border-slate-800 bg-slate-900/40 px-8 flex items-center justify-between shrink-0">
-            <div class="relative w-96">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-sm"></i>
-                <input type="text" id="searchInput" oninput="searchFiles()" placeholder="Buscar mis documentos, fotos, videos..." class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 transition">
-            </div>
-            <button onclick="loadFiles()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-xl border border-slate-700 transition flex items-center gap-2">
-                <i class="fa-solid fa-rotate-right"></i> Actualizar
-            </button>
-        </header>
-
-        <main class="flex-1 overflow-y-auto p-8 space-y-6">
-            <div id="dropZone" class="border-2 border-dashed border-slate-800 hover:border-sky-500/50 bg-slate-900/20 hover:bg-slate-900/40 rounded-2xl p-6 text-center transition cursor-pointer">
-                <div class="flex items-center justify-center gap-4 text-slate-400">
-                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-sky-400"></i>
-                    <div class="text-left">
-                        <p class="text-sm font-medium text-slate-200">Arrastra archivos aquí para guardarlos en tu cuenta</p>
-                        <p class="text-xs text-slate-500">Soporta PDF, DOCX, PNG, JPG, MP4, MP3, ZIP hasta 500 MB</p>
-                    </div>
-                </div>
-                <div id="uploadStatus" class="hidden mt-3 text-xs font-semibold text-sky-400 animate-pulse">
-                    <i class="fa-solid fa-spinner fa-spin mr-1"></i> Guardando archivo en tu espacio privado...
-                </div>
-            </div>
-
-            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
-                <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center">
-                    <h2 id="currentCategoryTitle" class="text-sm font-bold text-slate-200 uppercase tracking-wider">Todos mis archivos</h2>
-                    <span id="fileCount" class="text-xs text-slate-500">0 elementos</span>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-300">
-                        <thead class="bg-slate-900/80 text-xs text-slate-400 uppercase tracking-wider border-b border-slate-800">
-                            <tr>
-                                <th class="py-3.5 px-6">Tipo</th>
-                                <th class="py-3.5 px-6">Nombre del Archivo</th>
-                                <th class="py-3.5 px-6">Fecha</th>
-                                <th class="py-3.5 px-6">Tamaño</th>
-                                <th class="py-3.5 px-6 text-right">Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="filesTableBody" class="divide-y divide-slate-800/60">
-                            <tr><td colspan="5" class="text-center py-12 text-slate-500">Cargando tus archivos...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
+    <!-- Botones Redes Sociales -->
+    <div class="space-y-3 mb-6">
+      <button class="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-sm font-medium rounded-xl border border-slate-700 flex items-center justify-center gap-3 transition">
+        <i class="fa-brands fa-google text-red-400"></i> Continuar con Google
+      </button>
+      <button class="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-sm font-medium rounded-xl border border-slate-700 flex items-center justify-center gap-3 transition">
+        <i class="fa-brands fa-facebook text-blue-500"></i> Continuar con Facebook
+      </button>
     </div>
 
-    <script>
-        const API_URL = '/api';
-        let currentUser = JSON.parse(localStorage.getItem('stamarc_user') || 'null');
-        let isRegistering = false;
-        let allFiles = [];
-        let currentFilter = 'all';
+    <!-- Separador -->
+    <div class="relative my-6 text-center">
+      <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800"></div></div>
+      <span class="relative px-3 bg-slate-900 text-xs text-slate-500 uppercase tracking-wider">o con correo</span>
+    </div>
 
-        const dropZone = document.getElementById('dropZone');
-        const fileInput = document.getElementById('fileInput');
-        const uploadStatus = document.getElementById('uploadStatus');
+    <!-- Mensaje de Error / Éxito -->
+    <div id="error-message" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 text-xs rounded-xl text-center"></div>
+    <div id="success-message" class="hidden mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs rounded-xl text-center"></div>
 
-        if (currentUser) {
-            hideAuthModal();
+    <!-- Formulario -->
+    <form id="auth-form" class="space-y-4">
+      <div id="field-nombre">
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nombre Completo</label>
+        <input type="text" id="nombre" placeholder="Marvin Ramirez" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition">
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Correo Electrónico</label>
+        <input type="email" id="email" required placeholder="correo@ejemplo.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition">
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contraseña</label>
+        <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition">
+      </div>
+
+      <button type="submit" id="btn-submit" class="w-full py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 transition mt-2">
+        Registrarse
+      </button>
+    </form>
+
+    <!-- Switch entre Login y Registro -->
+    <div class="text-center mt-6 text-sm text-slate-400">
+      <span id="toggle-text">¿Ya tienes una cuenta?</span>
+      <button id="toggle-btn" class="text-sky-400 font-semibold hover:underline ml-1">Inicia sesión</button>
+    </div>
+
+  </div>
+
+  <script>
+    let isRegisterMode = true;
+
+    const authForm = document.getElementById('auth-form');
+    const fieldNombre = document.getElementById('field-nombre');
+    const btnSubmit = document.getElementById('btn-submit');
+    const toggleBtn = document.getElementById('toggle-btn');
+    const toggleText = document.getElementById('toggle-text');
+    const subtitle = document.getElementById('subtitle');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+
+    // Cambiar entre pantalla de Registro e Inicio de Sesión
+    toggleBtn.addEventListener('click', () => {
+      isRegisterMode = !isRegisterMode;
+      errorMessage.classList.add('hidden');
+      successMessage.classList.add('hidden');
+
+      if (isRegisterMode) {
+        fieldNombre.classList.remove('hidden');
+        btnSubmit.textContent = 'Registrarse';
+        toggleText.textContent = '¿Ya tienes una cuenta?';
+        toggleBtn.textContent = 'Inicia sesión';
+        subtitle.textContent = 'Crea tu cuenta para gestionar tus archivos';
+      } else {
+        fieldNombre.classList.add('hidden');
+        btnSubmit.textContent = 'Iniciar Sesión';
+        toggleText.textContent = '¿No tienes cuenta?';
+        toggleBtn.textContent = 'Regístrate';
+        subtitle.textContent = 'Ingresa tus credenciales para acceder';
+      }
+    });
+
+    // Enviar formulario al backend
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMessage.classList.add('hidden');
+      successMessage.classList.add('hidden');
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const nombre = isRegisterMode ? document.getElementById('nombre').value : '';
+
+      const endpoint = isRegisterMode ? '/api/register' : '/api/login';
+      const payload = isRegisterMode ? { nombre, email, password } : { email, password };
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          successMessage.textContent = data.message;
+          successMessage.classList.remove('hidden');
         } else {
-            showAuthModal();
+          errorMessage.textContent = data.error || 'Ocurrió un error al procesar la solicitud';
+          errorMessage.classList.remove('hidden');
         }
+      } catch (err) {
+        console.error('Error de conexión:', err);
+        errorMessage.textContent = 'Error al conectar con el servidor';
+        errorMessage.classList.remove('hidden');
+      }
+    });
+  </script>
 
-        function showAuthModal() {
-            document.getElementById('authModal').classList.remove('hidden');
-        }
-
-        function hideAuthModal() {
-            document.getElementById('authModal').classList.add('hidden');
-            if (currentUser) {
-                document.getElementById('userNameDisplay').innerText = currentUser.name || currentUser.email;
-                loadFiles();
-            }
-        }
-
-        function toggleAuthMode() {
-            isRegistering = !isRegistering;
-            document.getElementById('authError').classList.add('hidden');
-            if (isRegistering) {
-                document.getElementById('nameField').classList.remove('hidden');
-                document.getElementById('authSubtitle').innerText = 'Crea tu cuenta para gestionar tus archivos';
-                document.getElementById('authSubmitBtn').innerText = 'Registrarse';
-                document.getElementById('toggleAuthText').innerText = '¿Ya tienes una cuenta?';
-                document.getElementById('toggleAuthBtn').innerText = 'Inicia sesión';
-            } else {
-                document.getElementById('nameField').classList.add('hidden');
-                document.getElementById('authSubtitle').innerText = 'Inicia sesión para acceder a tus archivos privados';
-                document.getElementById('authSubmitBtn').innerText = 'Iniciar Sesión';
-                document.getElementById('toggleAuthText').innerText = '¿No tienes cuenta?';
-                document.getElementById('toggleAuthBtn').innerText = 'Regístrate gratis';
-            }
-        }
-
-        async function handleAuth(e) {
-            e.preventDefault();
-            const errorDiv = document.getElementById('authError');
-            errorDiv.classList.add('hidden');
-
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-            const name = document.getElementById('authName').value;
-
-            const endpoint = isRegistering ? '/auth/register' : '/auth/login';
-            const payload = isRegistering ? { name, email, password } : { email, password };
-
-            try {
-                const res = await fetch(`${API_URL}${endpoint}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-
-                if (res.ok) {
-                    currentUser = data.user;
-                    localStorage.setItem('stamarc_user', JSON.stringify(currentUser));
-                    hideAuthModal();
-                } else {
-                    errorDiv.innerText = data.error || 'Ocurrió un error';
-                    errorDiv.classList.remove('hidden');
-                }
-            } catch (err) {
-                errorDiv.innerText = 'Error al conectar con el servidor';
-                errorDiv.classList.remove('hidden');
-            }
-        }
-
-        // Simulación interactiva fluida para Login Social
-        async function socialLogin(provider) {
-            const emailInput = prompt(`Ingresa tu correo de ${provider} para continuar en Stamarc Cloud:`);
-            if (!emailInput) return;
-
-            const nameInput = prompt("Ingresa tu nombre o alias:", emailInput.split('@')[0]);
-
-            try {
-                const res = await fetch(`${API_URL}/auth/social`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: nameInput, email: emailInput, provider: provider.toLowerCase() })
-                });
-                const data = await res.json();
-
-                if (res.ok) {
-                    currentUser = data.user;
-                    localStorage.setItem('stamarc_user', JSON.stringify(currentUser));
-                    hideAuthModal();
-                } else {
-                    alert(data.error || 'Error en autenticación social');
-                }
-            } catch (err) {
-                alert('Error al conectar con el servidor');
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('stamarc_user');
-            currentUser = null;
-            allFiles = [];
-            showAuthModal();
-        }
-
-        dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) uploadFile(e.target.files[0]); });
-
-        async function uploadFile(file) {
-            if (!currentUser) return showAuthModal();
-
-            const formData = new FormData();
-            formData.append('file', file);
-            uploadStatus.classList.remove('hidden');
-
-            try {
-                const response = await fetch(`${API_URL}/upload`, {
-                    method: 'POST',
-                    headers: { 'user-id': currentUser.id },
-                    body: formData
-                });
-                if (response.ok) {
-                    await loadFiles();
-                } else {
-                    alert('Error al guardar el archivo');
-                }
-            } catch (err) {
-                alert('Error al conectar con el servidor');
-            } finally {
-                uploadStatus.classList.add('hidden');
-                fileInput.value = '';
-            }
-        }
-
-        async function loadFiles() {
-            if (!currentUser) return;
-            const tableBody = document.getElementById('filesTableBody');
-
-            try {
-                const res = await fetch(`${API_URL}/files`, {
-                    headers: { 'user-id': currentUser.id }
-                });
-                allFiles = await res.json();
-                renderFiles();
-            } catch (err) {
-                tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-12 text-rose-400">Error al comunicarse con el servidor.</td></tr>`;
-            }
-        }
-
-        function getFileCategory(filename) {
-            const ext = filename.split('.').pop().toLowerCase();
-            if (['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext)) return 'docs';
-            if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext)) return 'images';
-            if (['mp4', 'mkv', 'avi', 'mov', 'mp3', 'wav', 'ogg'].includes(ext)) return 'media';
-            return 'other';
-        }
-
-        function getFileIcon(filename) {
-            const ext = filename.split('.').pop().toLowerCase();
-            if (['pdf'].includes(ext)) return '<i class="fa-solid fa-file-pdf text-rose-500 text-lg"></i>';
-            if (['doc', 'docx'].includes(ext)) return '<i class="fa-solid fa-file-word text-blue-500 text-lg"></i>';
-            if (['xls', 'xlsx'].includes(ext)) return '<i class="fa-solid fa-file-excel text-emerald-500 text-lg"></i>';
-            if (['png', 'jpg', 'jpeg', 'webp', 'gif'].includes(ext)) return '<i class="fa-solid fa-file-image text-emerald-400 text-lg"></i>';
-            if (['mp4', 'mkv', 'mov'].includes(ext)) return '<i class="fa-solid fa-file-video text-purple-400 text-lg"></i>';
-            if (['mp3', 'wav'].includes(ext)) return '<i class="fa-solid fa-file-audio text-amber-400 text-lg"></i>';
-            if (['zip', 'rar', '7z'].includes(ext)) return '<i class="fa-solid fa-file-zipper text-amber-500 text-lg"></i>';
-            return '<i class="fa-solid fa-file text-slate-400 text-lg"></i>';
-        }
-
-        function renderFiles() {
-            const tableBody = document.getElementById('filesTableBody');
-            const searchVal = document.getElementById('searchInput').value.toLowerCase();
-
-            let filtered = allFiles.filter(file => {
-                const matchesCategory = (currentFilter === 'all') || (getFileCategory(file.name) === currentFilter);
-                const matchesSearch = file.name.toLowerCase().includes(searchVal);
-                return matchesCategory && matchesSearch;
-            });
-
-            document.getElementById('fileCount').innerText = `${filtered.length} elemento(s)`;
-
-            if (filtered.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" class="text-center py-12 text-slate-500">No tienes archivos en esta categoría.</td></tr>`;
-                updateStorage();
-                return;
-            }
-
-            tableBody.innerHTML = filtered.map(file => `
-                <tr class="hover:bg-slate-800/40 transition">
-                    <td class="py-3.5 px-6">${getFileIcon(file.name)}</td>
-                    <td class="py-3.5 px-6 font-medium text-slate-100">${file.name}</td>
-                    <td class="py-3.5 px-6 text-slate-400 text-xs">${file.date || 'Reciente'}</td>
-                    <td class="py-3.5 px-6 text-slate-400 text-xs">${formatBytes(file.size)}</td>
-                    <td class="py-3.5 px-6 text-right space-x-2">
-                        <a href="${file.url}" download="${file.name}" class="text-slate-400 hover:text-sky-400 p-2 rounded-lg hover:bg-slate-800 transition inline-block" title="Descargar">
-                            <i class="fa-solid fa-arrow-down-to-line"></i>
-                        </a>
-                        <button onclick="copyLink('${window.location.origin}${file.url}')" class="text-slate-400 hover:text-amber-400 p-2 rounded-lg hover:bg-slate-800 transition" title="Copiar enlace">
-                            <i class="fa-solid fa-link"></i>
-                        </button>
-                        <button onclick="deleteFile('${file.id}')" class="text-slate-400 hover:text-rose-400 p-2 rounded-lg hover:bg-slate-800 transition" title="Eliminar">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-
-            updateStorage();
-        }
-
-        function filterCategory(cat) {
-            currentFilter = cat;
-            ['all', 'docs', 'images', 'media'].forEach(c => {
-                const btn = document.getElementById(`btn-${c}`);
-                if (c === cat) {
-                    btn.className = "sidebar-active w-full text-left px-4 py-3 rounded-lg text-sm font-medium flex items-center gap-3 transition";
-                } else {
-                    btn.className = "w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-3";
-                }
-            });
-
-            const titles = { all: 'Todos mis archivos', docs: 'Documentos', images: 'Fotos e Imágenes', media: 'Videos y Audio' };
-            document.getElementById('currentCategoryTitle').innerText = titles[cat];
-            renderFiles();
-        }
-
-        function searchFiles() { renderFiles(); }
-
-        function copyLink(url) {
-            navigator.clipboard.writeText(url);
-            alert('¡Enlace del archivo copiado al portapapeles!');
-        }
-
-        async function deleteFile(key) {
-            if (!currentUser) return;
-            if (!confirm('¿Deseas eliminar este archivo de tu espacio privado?')) return;
-            try {
-                const res = await fetch(`${API_URL}/files/${encodeURIComponent(key)}`, {
-                    method: 'DELETE',
-                    headers: { 'user-id': currentUser.id }
-                });
-                if (res.ok) loadFiles();
-            } catch (err) { console.error(err); }
-        }
-
-        function formatBytes(bytes) {
-            if (!bytes || bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        function updateStorage() {
-            const totalBytes = allFiles.reduce((acc, f) => acc + (f.size || 0), 0);
-            const usedMB = (totalBytes / (1024 * 1024)).toFixed(1);
-            document.getElementById('storageText').innerText = `${usedMB} MB`;
-            document.getElementById('storageBar').style.width = `${Math.min((totalBytes / (1024 * 1024 * 1024)) * 100, 100)}%`;
-        }
-    </script>
 </body>
 </html>
