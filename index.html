@@ -7,11 +7,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-950 text-white min-h-screen font-sans">
+<body class="bg-[#0b0f19] text-white min-h-screen font-sans">
 
   <!-- ==================== CONTENEDOR DE AUTENTICACIÓN ==================== -->
   <div id="auth-container" class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+    <div class="w-full max-w-md bg-[#111827] border border-slate-800/80 rounded-2xl p-8 shadow-2xl">
       
       <!-- Header / Logo -->
       <div class="text-center mb-8">
@@ -24,10 +24,10 @@
 
       <!-- Botones Redes Sociales -->
       <div class="space-y-3 mb-6">
-        <button type="button" class="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-sm font-medium rounded-xl border border-slate-700 flex items-center justify-center gap-3 transition">
+        <button type="button" class="w-full py-2.5 px-4 bg-[#1e293b] hover:bg-slate-700 text-sm font-medium rounded-xl border border-slate-700/60 flex items-center justify-center gap-3 transition">
           <i class="fa-brands fa-google text-red-400"></i> Continuar con Google
         </button>
-        <button type="button" class="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-sm font-medium rounded-xl border border-slate-700 flex items-center justify-center gap-3 transition">
+        <button type="button" class="w-full py-2.5 px-4 bg-[#1e293b] hover:bg-slate-700 text-sm font-medium rounded-xl border border-slate-700/60 flex items-center justify-center gap-3 transition">
           <i class="fa-brands fa-facebook text-blue-500"></i> Continuar con Facebook
         </button>
       </div>
@@ -35,7 +35,7 @@
       <!-- Separador -->
       <div class="relative my-6 text-center">
         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800"></div></div>
-        <span class="relative px-3 bg-slate-900 text-xs text-slate-500 uppercase tracking-wider">o con correo</span>
+        <span class="relative px-3 bg-[#111827] text-xs text-slate-500 uppercase tracking-wider">o con correo</span>
       </div>
 
       <!-- Mensajes de Estado -->
@@ -46,17 +46,17 @@
       <form id="auth-form" class="space-y-4">
         <div id="field-nombre">
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nombre Completo</label>
-          <input type="text" id="nombre" placeholder="Marvin Ramirez" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
+          <input type="text" id="nombre" placeholder="Marvin Ramirez" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Correo Electrónico</label>
-          <input type="email" id="email" required placeholder="correo@ejemplo.com" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
+          <input type="email" id="email" required placeholder="correo@ejemplo.com" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contraseña</label>
-          <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
+          <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-3 bg-[#0b0f19] border border-slate-800 rounded-xl focus:outline-none focus:border-sky-500 text-sm transition text-white">
         </div>
 
         <button type="submit" id="btn-submit" class="w-full py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 transition mt-2">
@@ -78,7 +78,7 @@
   <div id="dashboard-container" class="hidden min-h-screen flex flex-col">
     
     <!-- Navbar Superior -->
-    <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+    <header class="bg-[#111827] border-b border-slate-800/80 px-8 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center shadow-md shadow-sky-500/20">
           <i class="fa-solid fa-cloud text-xl text-white"></i>
@@ -87,25 +87,27 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <span id="user-display" class="text-sm text-slate-300 font-medium"><i class="fa-regular fa-user mr-2"></i>Usuario</span>
-        <button id="btn-logout" class="py-2 px-4 bg-slate-800 hover:bg-slate-700 text-xs font-medium text-red-400 border border-slate-700 rounded-xl transition flex items-center gap-2">
+        <span id="user-display" class="text-sm text-slate-300 font-medium"><i class="fa-regular fa-user mr-2"></i>Marvin Ramirez</span>
+        <button id="btn-logout" class="py-2 px-4 bg-[#1e293b] hover:bg-slate-700 text-xs font-medium text-red-400 border border-slate-700/60 rounded-xl transition flex items-center gap-2">
           <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
         </button>
       </div>
     </header>
 
     <!-- Contenido Principal -->
-    <main class="flex-1 p-6 max-w-6xl w-full mx-auto space-y-6">
+    <main class="flex-1 p-8 max-w-6xl w-full mx-auto space-y-6">
       
-      <!-- Zona de Subida de Archivos (Upload Dropzone) -->
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+      <!-- Zona de Subida de Archivos -->
+      <section class="bg-[#111827] border border-slate-800/80 rounded-2xl p-6 shadow-xl">
         <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
           <i class="fa-solid fa-cloud-arrow-up text-sky-400"></i> Subir Archivo
         </h2>
         
         <form id="upload-form" class="flex flex-col sm:flex-row items-center gap-4">
-          <input type="file" id="file-input" required class="block w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sky-500 file:text-slate-950 hover:file:bg-sky-400 bg-slate-950 rounded-xl border border-slate-800 p-2 cursor-pointer">
-          <button type="submit" id="btn-upload" class="w-full sm:w-auto px-6 py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 transition flex items-center justify-center gap-2">
+          <div class="relative w-full flex items-center bg-[#0b0f19] border border-slate-800 rounded-xl p-2">
+            <input type="file" id="file-input" required class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-sky-500 file:text-slate-950 hover:file:bg-sky-400 bg-transparent cursor-pointer">
+          </div>
+          <button type="submit" id="btn-upload" class="w-full sm:w-auto px-8 py-3 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-sky-500/20 transition flex items-center justify-center gap-2 shrink-0">
             <i class="fa-solid fa-upload"></i> Subir
           </button>
         </form>
@@ -113,24 +115,38 @@
         <div id="upload-status" class="hidden mt-4 p-3 rounded-xl text-xs text-center"></div>
       </section>
 
-      <!-- Galería / Lista de Archivos -->
-      <section class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-        <div class="flex items-center justify-between mb-6">
+      <!-- Panel de Mis Archivos con Filtros de Multimedia -->
+      <section class="bg-[#111827] border border-slate-800/80 rounded-2xl p-6 shadow-xl">
+        
+        <!-- Encabezado y Filtros de Archivos -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <h2 class="text-lg font-bold text-white flex items-center gap-2">
             <i class="fa-solid fa-folder-open text-sky-400"></i> Mis Archivos
           </h2>
-          <button id="btn-refresh" class="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl border border-slate-700 transition flex items-center gap-2">
-            <i class="fa-solid fa-rotate-right"></i> Actualizar
-          </button>
+
+          <!-- Pestañas de Filtrado (Multimedia, Fotos, Documentos) -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0">
+            <button onclick="filterCategory('all')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-sky-500 text-slate-950 transition">Todos</button>
+            <button onclick="filterCategory('images')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1e293b] text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5"><i class="fa-solid fa-image text-emerald-400"></i> Fotos</button>
+            <button onclick="filterCategory('docs')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1e293b] text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5"><i class="fa-solid fa-file-lines text-blue-400"></i> Documentos</button>
+            <button onclick="filterCategory('media')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1e293b] text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5"><i class="fa-solid fa-video text-purple-400"></i> Multimedia</button>
+            <button onclick="filterCategory('others')" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#1e293b] text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5"><i class="fa-solid fa-box text-amber-400"></i> Otros</button>
+            
+            <button id="btn-refresh" class="ml-2 p-2 bg-[#1e293b] hover:bg-slate-700 text-xs text-slate-300 rounded-lg border border-slate-700/60 transition" title="Actualizar">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+          </div>
         </div>
 
+        <!-- Lista de Archivos -->
         <div id="files-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Los archivos cargados desde R2 se insertan dinámicamente aquí -->
+          <!-- Los archivos cargados se insertan dinámicamente aquí -->
         </div>
 
+        <!-- Estado Vacío -->
         <div id="empty-state" class="text-center py-12 text-slate-500 hidden">
-          <i class="fa-solid fa-box-open text-4xl mb-3"></i>
-          <p class="text-sm">No hay archivos subidos aún.</p>
+          <i class="fa-solid fa-box-open text-4xl mb-3 text-slate-600"></i>
+          <p class="text-sm">No hay archivos en esta categoría.</p>
         </div>
       </section>
 
@@ -141,8 +157,10 @@
   <!-- ==================== LÓGICA DE JAVASCRIPT ==================== -->
   <script>
     let isRegisterMode = true;
+    let allFiles = []; // Almacena todos los archivos descargados de R2
+    let currentCategory = 'all';
 
-    // Elementos Autenticación
+    // Elementos DOM
     const authContainer = document.getElementById('auth-container');
     const dashboardContainer = document.getElementById('dashboard-container');
     const authForm = document.getElementById('auth-form');
@@ -156,7 +174,6 @@
     const userDisplay = document.getElementById('user-display');
     const btnLogout = document.getElementById('btn-logout');
 
-    // Elementos Dashboard Archivos
     const uploadForm = document.getElementById('upload-form');
     const fileInput = document.getElementById('file-input');
     const uploadStatus = document.getElementById('upload-status');
@@ -185,7 +202,7 @@
       }
     });
 
-    // Enviar Registro / Inicio de Sesión
+    // Login / Registro Form
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       errorMessage.classList.add('hidden');
@@ -211,10 +228,9 @@
           successMessage.textContent = isRegisterMode ? '¡Usuario registrado correctamente!' : '¡Inicio de sesión exitoso!';
           successMessage.classList.remove('hidden');
 
-          // Pasar al Dashboard tras 1 segundo
           setTimeout(() => {
             showDashboard(data.user?.nombre || email);
-          }, 1000);
+          }, 800);
 
         } else {
           errorMessage.textContent = data.error || 'Error en la solicitud';
@@ -227,7 +243,6 @@
       }
     });
 
-    // Transición al Dashboard
     function showDashboard(username) {
       authContainer.classList.add('hidden');
       dashboardContainer.classList.remove('hidden');
@@ -235,7 +250,6 @@
       loadFiles();
     }
 
-    // Cerrar Sesión
     btnLogout.addEventListener('click', () => {
       dashboardContainer.classList.add('hidden');
       authContainer.classList.remove('hidden');
@@ -244,7 +258,7 @@
       errorMessage.classList.add('hidden');
     });
 
-    // Cargar Lista de Archivos desde R2
+    // Cargar Archivos desde R2
     async function loadFiles() {
       filesList.innerHTML = '<div class="col-span-full text-center py-6 text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Cargando archivos...</div>';
       emptyState.classList.add('hidden');
@@ -253,40 +267,75 @@
         const response = await fetch('/api/files');
         const data = await response.json();
 
-        if (response.ok && data.files && data.files.length > 0) {
-          filesList.innerHTML = '';
-          data.files.forEach(file => {
-            const fileCard = document.createElement('div');
-            fileCard.className = 'bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between hover:border-sky-500/50 transition';
-            fileCard.innerHTML = `
-              <div class="flex items-start gap-3 mb-3">
-                <div class="w-10 h-10 bg-slate-800 text-sky-400 rounded-lg flex items-center justify-center shrink-0">
-                  <i class="fa-solid fa-file text-lg"></i>
-                </div>
-                <div class="overflow-hidden">
-                  <p class="text-sm font-semibold text-white truncate" title="${file.key}">${file.key}</p>
-                  <p class="text-xs text-slate-500">${(file.size / 1024).toFixed(1)} KB</p>
-                </div>
-              </div>
-              <a href="${file.url}" target="_blank" download class="w-full py-2 bg-slate-800 hover:bg-sky-500 hover:text-slate-950 text-slate-300 text-xs font-semibold rounded-lg text-center transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-download"></i> Descargar
-              </a>
-            `;
-            filesList.appendChild(fileCard);
-          });
+        if (response.ok && data.files) {
+          allFiles = data.files;
+          renderFiles();
         } else {
-          filesList.innerHTML = '';
-          emptyState.classList.remove('hidden');
+          allFiles = [];
+          renderFiles();
         }
       } catch (err) {
         console.error('Error al cargar archivos:', err);
-        filesList.innerHTML = '<div class="col-span-full text-center py-6 text-red-400">Error al obtener archivos desde Cloudflare R2</div>';
+        filesList.innerHTML = '<div class="col-span-full text-center py-6 text-red-400">Error al conectar con el almacenamiento R2</div>';
       }
+    }
+
+    // Filtrar por Categorías
+    function filterCategory(cat) {
+      currentCategory = cat;
+      renderFiles();
+    }
+
+    function renderFiles() {
+      filesList.innerHTML = '';
+
+      let filtered = allFiles.filter(file => {
+        const ext = file.key.split('.').pop().toLowerCase();
+        if (currentCategory === 'images') return ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext);
+        if (currentCategory === 'docs') return ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx'].includes(ext);
+        if (currentCategory === 'media') return ['mp4', 'mp3', 'mkv', 'wav', 'avi', 'mov'].includes(ext);
+        if (currentCategory === 'others') return !['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx', 'mp4', 'mp3', 'mkv', 'wav'].includes(ext);
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      filtered.forEach(file => {
+        const ext = file.key.split('.').pop().toLowerCase();
+        let iconClass = 'fa-file text-slate-400';
+
+        if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) iconClass = 'fa-image text-emerald-400';
+        else if (['pdf', 'doc', 'docx', 'txt'].includes(ext)) iconClass = 'fa-file-lines text-blue-400';
+        else if (['mp4', 'mp3', 'mkv', 'wav'].includes(ext)) iconClass = 'fa-video text-purple-400';
+
+        const card = document.createElement('div');
+        card.className = 'bg-[#0b0f19] border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between hover:border-sky-500/50 transition shadow-md';
+        card.innerHTML = `
+          <div class="flex items-start gap-3 mb-3">
+            <div class="w-10 h-10 bg-[#1e293b] rounded-lg flex items-center justify-center shrink-0">
+              <i class="fa-solid ${iconClass} text-lg"></i>
+            </div>
+            <div class="overflow-hidden">
+              <p class="text-sm font-semibold text-white truncate" title="${file.key}">${file.key}</p>
+              <p class="text-xs text-slate-500">${(file.size / 1024).toFixed(1)} KB</p>
+            </div>
+          </div>
+          <a href="${file.url}" target="_blank" download class="w-full py-2 bg-[#1e293b] hover:bg-sky-500 hover:text-slate-950 text-slate-300 text-xs font-semibold rounded-lg text-center transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-download"></i> Descargar
+          </a>
+        `;
+        filesList.appendChild(card);
+      });
     }
 
     btnRefresh.addEventListener('click', loadFiles);
 
-    // Subir Archivo a Cloudflare R2
+    // Subir Archivo
     uploadForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!fileInput.files[0]) return;
@@ -313,12 +362,12 @@
           loadFiles();
         } else {
           uploadStatus.className = 'mt-4 p-3 rounded-xl text-xs text-center bg-red-500/10 border border-red-500/30 text-red-400';
-          uploadStatus.textContent = data.error || 'Error al subir el archivo';
+          uploadStatus.textContent = data.error || 'Fallo al guardar el archivo en R2';
         }
       } catch (err) {
         console.error('Error al subir:', err);
         uploadStatus.className = 'mt-4 p-3 rounded-xl text-xs text-center bg-red-500/10 border border-red-500/30 text-red-400';
-        uploadStatus.textContent = 'Error de conexión al subir archivo';
+        uploadStatus.textContent = 'Fallo al guardar el archivo en R2';
       }
     });
   </script>
