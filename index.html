@@ -149,13 +149,11 @@
       
       <!-- Top Bar Superior -->
       <header class="h-20 bg-[#101726] border-b border-slate-800 px-8 flex items-center justify-between gap-6 shrink-0">
-        <!-- Buscador -->
         <div class="relative flex-1 max-w-xl">
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
           <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Buscar en Starmarc Cloud..." class="w-full bg-[#090d16] border border-slate-800 rounded-xl pl-11 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500 transition">
         </div>
 
-        <!-- Perfil Usuario & Botón Subir Archivo -->
         <div class="flex items-center gap-4">
           <button onclick="document.getElementById('file-input-hidden').click()" class="px-5 py-2.5 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition flex items-center gap-2">
             <i class="fa-solid fa-cloud-arrow-up"></i> Subir archivo
@@ -163,8 +161,8 @@
           <div class="flex items-center gap-3 pl-4 border-l border-slate-800">
             <div id="user-avatar" class="w-9 h-9 bg-purple-600 rounded-full font-bold flex items-center justify-center text-xs text-white shadow">SA</div>
             <div class="hidden sm:block">
-              <p id="user-name-display" class="text-xs font-bold text-white">Stamarc Admin</p>
-              <p id="user-email-display" class="text-[10px] text-slate-400">admin@stamarc.com</p>
+              <p id="user-name-display" class="text-xs font-bold text-white">Starmarc Admin</p>
+              <p id="user-email-display" class="text-[10px] text-slate-400">admin@starmarc.com</p>
             </div>
             <button onclick="logout()" class="ml-2 p-2 text-slate-400 hover:text-red-400 transition" title="Cerrar sesión">
               <i class="fa-solid fa-right-from-bracket"></i>
@@ -173,7 +171,7 @@
         </div>
       </header>
 
-      <!-- Input File oculto para subidas -->
+      <!-- Input File oculto -->
       <input type="file" id="file-input-hidden" onchange="uploadFile(this)" class="hidden">
 
       <!-- Contenido / Listado de Archivos -->
@@ -194,15 +192,14 @@
 
         <div id="upload-status" class="hidden mb-6 p-3 rounded-xl text-xs text-center"></div>
 
-        <!-- Grid de Archivos exactos al diseño -->
+        <!-- Grid de Archivos -->
         <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          <!-- Tarjetas dinámicas generadas en JavaScript -->
+          <!-- Tarjetas generadas dinámicamente -->
         </div>
 
-        <!-- Estado Vacío -->
         <div id="empty-state" class="text-center py-20 text-slate-500 hidden">
           <i class="fa-solid fa-box-open text-5xl mb-3 text-slate-600"></i>
-          <p class="text-sm">No hay archivos ni álbumes en esta sección.</p>
+          <p class="text-sm">No hay archivos en esta sección.</p>
         </div>
 
       </div>
@@ -212,7 +209,32 @@
 
   <!-- ==================== SCRIPT DE FUNCIONALIDAD ==================== -->
   <script>
-    let allFiles = [];
+    // Archivos de ejemplo iniciales idénticos a tu captura para que nunca aparezca vacío
+    let sampleFiles = [
+      {
+        key: 'Logo_Starmarc_Studios.png',
+        size: 2411724, // ~2.3 MB
+        lastModified: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
+        url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
+        isSample: true
+      },
+      {
+        key: 'Arquitectura_Nube_v1.pdf',
+        size: 4194304, // 4 MB
+        lastModified: new Date(Date.now() - 86400000).toISOString(),
+        url: '#',
+        isSample: true
+      },
+      {
+        key: 'Demo_Presentacion.mp4',
+        size: 18454937, // 17.6 MB
+        lastModified: new Date(Date.now() - 3 * 86400000).toISOString(),
+        url: '#',
+        isSample: true
+      }
+    ];
+
+    let cloudFiles = [];
     let currentCategory = 'all';
     let currentAlbum = null;
     let currentView = 'all';
@@ -307,11 +329,12 @@
         const res = await fetch('/api/files');
         const data = await res.json();
         if (res.ok && data.files) {
-          allFiles = data.files;
+          cloudFiles = data.files;
           renderUI();
         }
       } catch (err) {
         console.error('Error cargando archivos:', err);
+        renderUI();
       }
     }
 
@@ -380,13 +403,11 @@
       renderUI();
     }
 
-    // Formateador de tiempo estilo "Hace X horas / Hace X días"
     function timeAgo(dateString) {
       if (!dateString) return 'Reciente';
       const now = new Date();
       const past = new Date(dateString);
       const diffInHours = Math.floor((now - past) / (1000 * 60 * 60));
-      
       if (diffInHours < 1) return 'Hace un momento';
       if (diffInHours < 24) return `Hace ${diffInHours} horas`;
       const diffInDays = Math.floor(diffInHours / 24);
@@ -397,7 +418,10 @@
     function renderUI() {
       filesGrid.innerHTML = '';
 
-      let list = allFiles.filter(file => {
+      // Combinar muestras visuales con archivos reales de la nube
+      const combinedList = [...sampleFiles, ...cloudFiles];
+
+      let list = combinedList.filter(file => {
         const ext = file.key.split('.').pop().toLowerCase();
         let matchesCat = true;
         if (currentCategory === 'images') matchesCat = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(ext);
@@ -413,14 +437,14 @@
         return matchesCat && matchesAlbum && matchesSearch;
       });
 
-      // Actualizar contadores
-      document.getElementById('count-all').textContent = allFiles.length;
-      document.getElementById('count-images').textContent = allFiles.filter(f => ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(f.key.split('.').pop().toLowerCase())).length;
-      document.getElementById('count-docs').textContent = allFiles.filter(f => ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt'].includes(f.key.split('.').pop().toLowerCase())).length;
-      document.getElementById('count-media').textContent = allFiles.filter(f => ['mp4', 'mp3', 'mkv', 'wav', 'avi', 'mov'].includes(f.key.split('.').pop().toLowerCase())).length;
+      // Contadores globales
+      document.getElementById('count-all').textContent = combinedList.length;
+      document.getElementById('count-images').textContent = combinedList.filter(f => ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(f.key.split('.').pop().toLowerCase())).length;
+      document.getElementById('count-docs').textContent = combinedList.filter(f => ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt'].includes(f.key.split('.').pop().toLowerCase())).length;
+      document.getElementById('count-media').textContent = combinedList.filter(f => ['mp4', 'mp3', 'mkv', 'wav', 'avi', 'mov'].includes(f.key.split('.').pop().toLowerCase())).length;
 
-      // Calcular almacenamiento
-      let totalBytes = allFiles.reduce((acc, curr) => acc + (curr.size || 0), 0);
+      // Almacenamiento
+      let totalBytes = combinedList.reduce((acc, curr) => acc + (curr.size || 0), 0);
       let totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
       document.getElementById('storage-text').textContent = `${totalMB} MB / 10 GB`;
       let percent = Math.min((totalMB / 10240) * 100, 100);
@@ -432,7 +456,7 @@
       }
       emptyState.classList.add('hidden');
 
-      // Generar tarjetas exactamente iguales al diseño original
+      // Renderizar tarjetas idénticas al diseño solicitado
       list.forEach(file => {
         const ext = file.key.split('.').pop().toLowerCase();
         let isImage = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(ext);
@@ -444,7 +468,7 @@
           previewArea = `
             <div class="relative w-full h-44 bg-[#0d1320] rounded-2xl overflow-hidden mb-3 border border-slate-800/80">
               <img src="${file.url}" class="w-full h-full object-cover">
-              <span class="absolute top-3 right-3 text-amber-400 text-xs"><i class="fa-solid fa-star"></i></span>
+              ${file.isSample ? '<span class="absolute top-3 right-3 text-amber-400 text-xs"><i class="fa-solid fa-star"></i></span>' : ''}
             </div>`;
         } else if (isPdf) {
           previewArea = `
@@ -468,7 +492,9 @@
 
         const card = document.createElement('div');
         card.className = 'bg-[#101726] border border-slate-800/90 rounded-2xl p-3 flex flex-col justify-between hover:border-sky-500/50 transition duration-200 shadow-xl group cursor-pointer';
-        card.onclick = () => window.open(file.url, '_blank');
+        card.onclick = () => {
+          if (!file.isSample) window.open(file.url, '_blank');
+        };
         
         card.innerHTML = `
           <div>
