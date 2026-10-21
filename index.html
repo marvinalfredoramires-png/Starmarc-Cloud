@@ -6,6 +6,13 @@
   <title>Starmarc Cloud - BY STAMARC STUDIOS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Estilos personalizados para Drag and Drop */
+    .drag-active {
+      border-color: #38bdf8 !important;
+      background-color: rgba(56, 189, 248, 0.08) !important;
+    }
+  </style>
 </head>
 <body class="bg-[#090d16] text-white min-h-screen font-sans flex">
 
@@ -56,7 +63,6 @@
     <!-- SIDEBAR IZQUIERDA -->
     <aside class="w-64 bg-[#101726] border-r border-slate-800/80 flex flex-col justify-between p-6 shrink-0">
       <div>
-        <!-- Logo -->
         <div class="flex items-center gap-3 mb-8">
           <div class="w-10 h-10 bg-sky-500 rounded-xl flex items-center justify-center shadow-md shadow-sky-500/20">
             <i class="fa-solid fa-cloud text-xl text-white"></i>
@@ -67,12 +73,10 @@
           </div>
         </div>
 
-        <!-- Botón Nuevo Archivo -->
         <button onclick="document.getElementById('file-input-hidden').click()" class="w-full py-3 px-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold rounded-xl shadow-lg shadow-sky-500/20 flex items-center justify-center gap-2 mb-6 transition">
           <i class="fa-solid fa-plus"></i> Nuevo archivo
         </button>
 
-        <!-- Menú Principal -->
         <nav class="space-y-1 mb-6">
           <button onclick="switchView('all')" class="nav-btn w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium bg-sky-500/10 text-sky-400 border border-sky-500/20 transition">
             <span class="flex items-center gap-3"><i class="fa-solid fa-folder"></i> Mis Archivos</span>
@@ -88,7 +92,6 @@
           </button>
         </nav>
 
-        <!-- Categorías -->
         <div class="mb-6">
           <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2 px-2">Categorías</p>
           <div class="space-y-1">
@@ -111,7 +114,6 @@
           </div>
         </div>
 
-        <!-- Álbumes -->
         <div>
           <div class="flex items-center justify-between mb-2 px-2">
             <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Álbumes</p>
@@ -131,7 +133,6 @@
         </div>
       </div>
 
-      <!-- Almacenamiento Utilizado -->
       <div class="bg-[#090d16] border border-slate-800/80 p-4 rounded-xl mt-4">
         <div class="flex justify-between text-xs mb-2">
           <span class="text-slate-400 font-medium">Almacenamiento</span>
@@ -161,8 +162,8 @@
           <div class="flex items-center gap-3 pl-4 border-l border-slate-800">
             <div id="user-avatar" class="w-9 h-9 bg-purple-600 rounded-full font-bold flex items-center justify-center text-xs text-white shadow">SA</div>
             <div class="hidden sm:block">
-              <p id="user-name-display" class="text-xs font-bold text-white">Starmarc Admin</p>
-              <p id="user-email-display" class="text-[10px] text-slate-400">admin@starmarc.com</p>
+              <p id="user-name-display" class="text-xs font-bold text-white">Stamarc Admin</p>
+              <p id="user-email-display" class="text-[10px] text-slate-400">admin@stamarc.com</p>
             </div>
             <button onclick="logout()" class="ml-2 p-2 text-slate-400 hover:text-red-400 transition" title="Cerrar sesión">
               <i class="fa-solid fa-right-from-bracket"></i>
@@ -171,10 +172,8 @@
         </div>
       </header>
 
-      <!-- Input File oculto -->
       <input type="file" id="file-input-hidden" onchange="uploadFile(this)" class="hidden">
 
-      <!-- Contenido / Listado de Archivos -->
       <div class="flex-1 p-8 overflow-y-auto">
         
         <div class="flex items-center justify-between mb-6">
@@ -192,14 +191,25 @@
 
         <div id="upload-status" class="hidden mb-6 p-3 rounded-xl text-xs text-center"></div>
 
-        <!-- Grid de Archivos -->
-        <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          <!-- Tarjetas generadas dinámicamente -->
+        <!-- ZONA DRAG AND DROP / CARGA RÁPIDA (Ocupa el espacio sin verse vacía) -->
+        <div id="dropzone" onclick="document.getElementById('file-input-hidden').click()" class="border-2 border-dashed border-slate-800 hover:border-sky-500/60 bg-[#101726]/40 hover:bg-[#101726] rounded-2xl p-8 mb-8 text-center cursor-pointer transition duration-300 group">
+          <div class="w-14 h-14 bg-sky-500/10 text-sky-400 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition">
+            <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+          </div>
+          <p class="text-sm font-semibold text-white">Arrastra tus archivos aquí o <span class="text-sky-400 underline">haz clic para examinar</span></p>
+          <p class="text-xs text-slate-500 mt-1">Soporta imágenes, vídeos, PDFs y documentos (Hasta 100 MB)</p>
         </div>
 
-        <div id="empty-state" class="text-center py-20 text-slate-500 hidden">
-          <i class="fa-solid fa-box-open text-5xl mb-3 text-slate-600"></i>
-          <p class="text-sm">No hay archivos en esta sección.</p>
+        <!-- Grid de Archivos -->
+        <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <!-- Las tarjetas dinámicas se renderizan aquí -->
+        </div>
+
+        <!-- Estado Vacío cuando no hay ningún resultado -->
+        <div id="empty-state" class="text-center py-12 text-slate-500 hidden">
+          <i class="fa-solid fa-folder-open text-5xl mb-3 text-slate-700"></i>
+          <p class="text-sm font-medium text-slate-400">Esta carpeta está vacía</p>
+          <p class="text-xs text-slate-600 mt-1">Sube archivos usando la zona superior o el botón "Nuevo archivo"</p>
         </div>
 
       </div>
@@ -209,25 +219,25 @@
 
   <!-- ==================== SCRIPT DE FUNCIONALIDAD ==================== -->
   <script>
-    // Archivos de ejemplo iniciales idénticos a tu captura para que nunca aparezca vacío
+    // Archivos iniciales de muestra
     let sampleFiles = [
       {
         key: 'Logo_Starmarc_Studios.png',
-        size: 2411724, // ~2.3 MB
+        size: 2411724,
         lastModified: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
         url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
         isSample: true
       },
       {
         key: 'Arquitectura_Nube_v1.pdf',
-        size: 4194304, // 4 MB
+        size: 4194304,
         lastModified: new Date(Date.now() - 86400000).toISOString(),
         url: '#',
         isSample: true
       },
       {
         key: 'Demo_Presentacion.mp4',
-        size: 18454937, // 17.6 MB
+        size: 18454937,
         lastModified: new Date(Date.now() - 3 * 86400000).toISOString(),
         url: '#',
         isSample: true
@@ -253,8 +263,37 @@
     const filesGrid = document.getElementById('files-grid');
     const emptyState = document.getElementById('empty-state');
     const uploadStatus = document.getElementById('upload-status');
+    const dropzone = document.getElementById('dropzone');
 
     let isRegisterMode = true;
+
+    // Drag and Drop global
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, () => dropzone.classList.add('drag-active'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, () => dropzone.classList.remove('drag-active'), false);
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length > 0) {
+        document.getElementById('file-input-hidden').files = files;
+        uploadFile(document.getElementById('file-input-hidden'));
+      }
+    });
 
     toggleBtn.addEventListener('click', () => {
       isRegisterMode = !isRegisterMode;
@@ -418,7 +457,6 @@
     function renderUI() {
       filesGrid.innerHTML = '';
 
-      // Combinar muestras visuales con archivos reales de la nube
       const combinedList = [...sampleFiles, ...cloudFiles];
 
       let list = combinedList.filter(file => {
@@ -437,13 +475,11 @@
         return matchesCat && matchesAlbum && matchesSearch;
       });
 
-      // Contadores globales
       document.getElementById('count-all').textContent = combinedList.length;
       document.getElementById('count-images').textContent = combinedList.filter(f => ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(f.key.split('.').pop().toLowerCase())).length;
       document.getElementById('count-docs').textContent = combinedList.filter(f => ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt'].includes(f.key.split('.').pop().toLowerCase())).length;
       document.getElementById('count-media').textContent = combinedList.filter(f => ['mp4', 'mp3', 'mkv', 'wav', 'avi', 'mov'].includes(f.key.split('.').pop().toLowerCase())).length;
 
-      // Almacenamiento
       let totalBytes = combinedList.reduce((acc, curr) => acc + (curr.size || 0), 0);
       let totalMB = (totalBytes / (1024 * 1024)).toFixed(1);
       document.getElementById('storage-text').textContent = `${totalMB} MB / 10 GB`;
@@ -456,7 +492,6 @@
       }
       emptyState.classList.add('hidden');
 
-      // Renderizar tarjetas idénticas al diseño solicitado
       list.forEach(file => {
         const ext = file.key.split('.').pop().toLowerCase();
         let isImage = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'].includes(ext);
