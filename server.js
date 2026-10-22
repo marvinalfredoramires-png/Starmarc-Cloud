@@ -4,7 +4,7 @@ const multer = require('multer');
 const crypto = require('crypto');
 const app = express();
 
-// Configuración en memoria RAM (envía los archivos directo a R2 sin guardarlos en equipos locales)
+// Configuración en memoria RAM pura (Cero uso de disco local, ideal para servidores con poco espacio)
 const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(express.json());
@@ -29,14 +29,14 @@ const BUCKET_NAME = process.env.R2_BUCKET_NAME;
 // ==========================================
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
-    if (email === "marvinalfredoramires@gmail.com" && password === "Marvin503") { 
+    if (email === "admin@starmarc.com" && password === "123456") {
         return res.status(200).json({ success: true });
     }
     return res.status(401).json({ success: false, message: 'Credenciales incorrectas' });
 });
 
 // ==========================================
-// 2. SUBIR DIRECTAMENTE A R2
+// 2. SUBIR DIRECTAMENTE A R2 (DESDE MEMORIA)
 // ==========================================
 app.post('/api/upload', upload.single('file'), async (req, res) => {
     try {
@@ -50,7 +50,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         const uploadParams = {
             Bucket: BUCKET_NAME,
             Key: fileName,
-            Body: req.file.buffer,
+            Body: req.file.buffer, // Viaja directo desde la RAM hacia tu nube R2
             ContentType: req.file.mimetype,
         };
 
@@ -134,7 +134,7 @@ app.get('/', (req, res) => {
 });
 
 // ==========================================
-// 4. PANEL PRINCIPAL (INTERFAZ IDÉNTICA SOLICITADA)
+// 4. PANEL PRINCIPAL (INTERFAZ EXACTA DE TU CAPTURA)
 // ==========================================
 app.get('/dashboard', (req, res) => {
     res.send(`
@@ -236,7 +236,7 @@ app.get('/dashboard', (req, res) => {
                 </div>
             </header>
 
-            <!-- Sección de Archivos -->
+            <!-- Área de Archivos -->
             <main class="p-8 max-w-7xl mx-auto flex-1 w-full">
                 <div class="flex justify-between items-end mb-6">
                     <div>
@@ -252,7 +252,7 @@ app.get('/dashboard', (req, res) => {
                     </div>
                 </div>
 
-                <!-- Cuadrícula -->
+                <!-- Cuadrícula de Archivos -->
                 <div id="fileGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     <div class="file-card bg-[#131a2a] border border-slate-800/80 rounded-2xl p-3 hover:border-slate-700 transition group cursor-pointer relative" data-type="fotos" data-name="Logo_Starmarc_Studios.png">
                         <div class="relative h-40 rounded-xl overflow-hidden mb-3 bg-slate-900 flex items-center justify-center">
@@ -291,7 +291,7 @@ app.get('/dashboard', (req, res) => {
         </div>
 
         <script>
-            // Conexión dinámica con Cloudflare R2 al presionar Subir Archivo
+            // Conexión con Cloudflare R2
             document.getElementById('fileInput').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
