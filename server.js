@@ -29,7 +29,7 @@ const BUCKET_NAME = process.env.R2_BUCKET_NAME;
 // ==========================================
 app.post('/api/login', (req, res) => {
     const { email, password } = req.body;
-    if (email === "admin@starmarc.com" && password === "123456") {
+    if (email === "marvinalfredoramires@gmail.com" && password === "Marvin503") {
         return res.status(200).json({ success: true });
     }
     return res.status(401).json({ success: false, message: 'Credenciales incorrectas' });
