@@ -76,6 +76,27 @@ return res.status(200).json({
         return res.status(500).json({ success: false, message: error.message });
     }
 });
+// 2.5 LISTAR ARCHIVOS (con URL pública correcta)
+app.get('/api/files', async (req, res) => {
+  try {
+    const { ListObjectsV2Command } = await import('@aws-sdk/client-s3');
+    const publicBase = (process.env.R2_PUBLIC_URL || `https://${process.env.R2_BUCKET_NAME}.r2.dev`).replace(/\/$/, '');
+    const data = await s3Client.send(new ListObjectsV2Command({
+      Bucket: process.env.R2_BUCKET_NAME,
+    }));
+    const files = (data.Contents || []).map(file => ({
+      key: file.Key,
+      name: file.Key.split('/').pop(),
+      size: file.Size,
+      lastModified: file.LastModified,
+      url: `${publicBase}/${file.Key}`
+    })).sort((a,b) => new Date(b.lastModified) - new Date(a.lastModified));
+    res.json(files);
+  } catch (error) {
+    console.error('Error listando:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // ==========================================
 // 3. PANTALLA DE LOGIN
