@@ -53,17 +53,24 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             ContentType: req.file.mimetype,
         };
 
-        await s3Client.send(new PutObjectCommand(uploadParams));
+       await s3Client.send(new PutObjectCommand(uploadParams));
 
-        return res.status(200).json({
-            success: true,
-            file: {
-                name: req.file.originalname,
-                storedName: fileName,
-                size: (req.file.size / (1024 * 1024)).toFixed(1) + ' MB',
-                type: req.file.mimetype
-            }
-        });
+const publicBase = process.env.R2_PUBLIC_URL || `https://${BUCKET_NAME}.r2.dev`;
+const fileUrl = `${publicBase}/${fileName}`;
+
+return res.status(200).json({
+    success: true,
+    file: {
+        name: req.file.originalname,
+        storedName: fileName,
+        key: fileName,
+        url: fileUrl,
+        size: (req.file.size / (1024 * 1024)).toFixed(1) + ' MB',
+        type: req.file.mimetype
+    },
+    url: fileUrl,
+    key: fileName
+});
     } catch (error) {
         console.error('R2 Error REALR2:', error);
         return res.status(500).json({ success: false, message: error.message });
