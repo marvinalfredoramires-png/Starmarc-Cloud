@@ -67,7 +67,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         });
     } catch (error) {
         console.error('R2 Error REALR2:', error);
-        return res.status(500).json({ success: false, message: 'Error.message,code: error.code || errro.name });
+        return res.status(500).json({ success: false, message: error.message });
     }
 });
 
