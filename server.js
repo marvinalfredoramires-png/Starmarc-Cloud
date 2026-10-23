@@ -66,8 +66,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             }
         });
     } catch (error) {
-        console.error('Error al subir a R2:', error);
-        return res.status(500).json({ success: false, message: 'Error al subir el archivo a R2.' });
+        console.error('R2 Error REALR2:', error);
+        return res.status(500).json({ success: false, message: 'Error.message,code: error.code || errro.name });
     }
 });
 
